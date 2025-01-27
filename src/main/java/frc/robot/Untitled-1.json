@@ -1,0 +1,773 @@
+[
+    {
+        "messageType": 2,
+        "timestamp": -0.00000762939453125,
+        "seqNumber": 150,
+        "line": "********** Robot program starting **********"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.03102874755859375,
+        "seqNumber": 151,
+        "line": "NT: Listening on NT3 port 1735, NT4 port 5810"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.311004638671875,
+        "seqNumber": 152,
+        "line": "NT: Got a NT4 connection from 10.55.86.156 port 52711"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 0.31324005126953125,
+        "seqNumber": 153,
+        "line": "NT: CONNECTED NT4 client 'shuffleboard@1' (from 10.55.86.156:52711)"
+    },
+    {
+        "timestamp": 3.7432785034179688,
+        "seqNumber": 154,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "Unhandled exception instantiating robot com.fasterxml.jackson.databind.exc.MismatchedInputException com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type `double` from Object value (token `JsonToken.START_OBJECT`)\n at [Source: (File); line: 3, column: 14] (through reference chain: swervelib.parser.json.PhysicalPropertiesJson[\"conversionFactor\"]->swervelib.parser.json.MotorConfigDouble[\"drive\"])",
+        "location": "com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)",
+        "callStack": "\tat com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)\n\tat com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1752)\n\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1526)\n\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1431)\n\tat com.fasterxml.jackson.databind.DeserializationContext.extractScalarFromObject(DeserializationContext.java:943)\n\tat com.fasterxml.jackson.databind.deser.std.StdDeserializer._parseDoublePrimitive(StdDeserializer.java:1139)\n\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:682)\n\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:663)\n\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)\n\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)\n\tat com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:323)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4825)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3637)\n\tat swervelib.parser.SwerveParser.<init>(SwerveParser.java:60)\n\tat frc.robot.subsystems.SwerveSubsystem.<init>(SwerveSubsystem.java:41)\n\tat frc.robot.RobotContainer.<init>(RobotContainer.java:28)\n\tat frc.robot.Robot.<init>(Robot.java:28)\n\tat edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:370)\n\tat edu.wpi.first.wpilibj.RobotBase.startRobot(RobotBase.java:510)\n\tat frc.robot.Main.main(Main.java:23)\n",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7443923950195312,
+        "seqNumber": 155,
+        "line": "Error at com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59): Unhandled exception instantiating robot com.fasterxml.jackson.databind.exc.MismatchedInputException com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type `double` from Object value (token `JsonToken.START_OBJECT`)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7476425170898438,
+        "seqNumber": 156,
+        "line": " at [Source: (File); line: 3, column: 14] (through reference chain: swervelib.parser.json.PhysicalPropertiesJson[\"conversionFactor\"]->swervelib.parser.json.MotorConfigDouble[\"drive\"])"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7480010986328125,
+        "seqNumber": 157,
+        "line": "\tat com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)"
+    },
+    {
+        "timestamp": 3.7480010986328125,
+        "seqNumber": 158,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "The robot program quit unexpectedly. This is usually due to a code error.\n  The above stacktrace can help determine where the error occurred.\n  See https://wpilib.org/stacktrace for more information.\n",
+        "location": "edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:383)",
+        "callStack": "",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7485733032226562,
+        "seqNumber": 159,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1752)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7489242553710938,
+        "seqNumber": 160,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1526)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7492523193359375,
+        "seqNumber": 161,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1431)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7497711181640625,
+        "seqNumber": 162,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.extractScalarFromObject(DeserializationContext.java:943)"
+    },
+    {
+        "timestamp": 3.750091552734375,
+        "seqNumber": 163,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "Could not instantiate robot com.fasterxml.jackson.databind.exc.MismatchedInputException!",
+        "location": "edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:389)",
+        "callStack": "",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7501068115234375,
+        "seqNumber": 164,
+        "line": "\tat com.fasterxml.jackson.databind.deser.std.StdDeserializer._parseDoublePrimitive(StdDeserializer.java:1139)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.75262451171875,
+        "seqNumber": 165,
+        "line": "\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:682)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7532958984375,
+        "seqNumber": 166,
+        "line": "\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:663)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7535934448242188,
+        "seqNumber": 167,
+        "line": "\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7538833618164062,
+        "seqNumber": 168,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7541656494140625,
+        "seqNumber": 169,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7544479370117188,
+        "seqNumber": 170,
+        "line": "\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7547225952148438,
+        "seqNumber": 171,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7549972534179688,
+        "seqNumber": 172,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7552871704101562,
+        "seqNumber": 173,
+        "line": "\tat com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:323)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7555618286132812,
+        "seqNumber": 174,
+        "line": "\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4825)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.755828857421875,
+        "seqNumber": 175,
+        "line": "\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3637)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7561874389648438,
+        "seqNumber": 176,
+        "line": "\tat swervelib.parser.SwerveParser.<init>(SwerveParser.java:60)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7564620971679688,
+        "seqNumber": 177,
+        "line": "\tat frc.robot.subsystems.SwerveSubsystem.<init>(SwerveSubsystem.java:41)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7567214965820312,
+        "seqNumber": 178,
+        "line": "\tat frc.robot.RobotContainer.<init>(RobotContainer.java:28)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.757049560546875,
+        "seqNumber": 179,
+        "line": "\tat frc.robot.Robot.<init>(Robot.java:28)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7574081420898438,
+        "seqNumber": 180,
+        "line": "\tat edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:370)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7576904296875,
+        "seqNumber": 181,
+        "line": "\tat edu.wpi.first.wpilibj.RobotBase.startRobot(RobotBase.java:510)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7579345703125,
+        "seqNumber": 182,
+        "line": "\tat frc.robot.Main.main(Main.java:23)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7584075927734375,
+        "seqNumber": 183,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7587432861328125,
+        "seqNumber": 184,
+        "line": "Error at edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:383): The robot program quit unexpectedly. This is usually due to a code error."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7590179443359375,
+        "seqNumber": 185,
+        "line": "  The above stacktrace can help determine where the error occurred."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.7592697143554688,
+        "seqNumber": 186,
+        "line": "  See https://wpilib.org/stacktrace for more information."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.759490966796875,
+        "seqNumber": 187,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 3.759796142578125,
+        "seqNumber": 188,
+        "line": "Error at edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:389): Could not instantiate robot com.fasterxml.jackson.databind.exc.MismatchedInputException!"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 14.13623046875,
+        "seqNumber": 189,
+        "line": "********** Robot program starting **********"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 14.164276123046875,
+        "seqNumber": 190,
+        "line": "NT: Listening on NT3 port 1735, NT4 port 5810"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 14.459640502929688,
+        "seqNumber": 191,
+        "line": "NT: Got a NT4 connection from 10.55.86.156 port 59762"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 14.464286804199219,
+        "seqNumber": 192,
+        "line": "NT: CONNECTED NT4 client 'shuffleboard@1' (from 10.55.86.156:59762)"
+    },
+    {
+        "timestamp": 17.63880157470703,
+        "seqNumber": 193,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "Unhandled exception instantiating robot com.fasterxml.jackson.databind.exc.MismatchedInputException com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type `double` from Object value (token `JsonToken.START_OBJECT`)\n at [Source: (File); line: 3, column: 14] (through reference chain: swervelib.parser.json.PhysicalPropertiesJson[\"conversionFactor\"]->swervelib.parser.json.MotorConfigDouble[\"drive\"])",
+        "location": "com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)",
+        "callStack": "\tat com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)\n\tat com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1752)\n\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1526)\n\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1431)\n\tat com.fasterxml.jackson.databind.DeserializationContext.extractScalarFromObject(DeserializationContext.java:943)\n\tat com.fasterxml.jackson.databind.deser.std.StdDeserializer._parseDoublePrimitive(StdDeserializer.java:1139)\n\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:682)\n\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:663)\n\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)\n\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)\n\tat com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:323)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4825)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3637)\n\tat swervelib.parser.SwerveParser.<init>(SwerveParser.java:60)\n\tat frc.robot.subsystems.SwerveSubsystem.<init>(SwerveSubsystem.java:41)\n\tat frc.robot.RobotContainer.<init>(RobotContainer.java:28)\n\tat frc.robot.Robot.<init>(Robot.java:28)\n\tat edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:370)\n\tat edu.wpi.first.wpilibj.RobotBase.startRobot(RobotBase.java:510)\n\tat frc.robot.Main.main(Main.java:23)\n",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.64002227783203,
+        "seqNumber": 194,
+        "line": "Error at com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59): Unhandled exception instantiating robot com.fasterxml.jackson.databind.exc.MismatchedInputException com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type `double` from Object value (token `JsonToken.START_OBJECT`)"
+    },
+    {
+        "timestamp": 17.64160919189453,
+        "seqNumber": 195,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "The robot program quit unexpectedly. This is usually due to a code error.\n  The above stacktrace can help determine where the error occurred.\n  See https://wpilib.org/stacktrace for more information.\n",
+        "location": "edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:383)",
+        "callStack": "",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.641815185546875,
+        "seqNumber": 196,
+        "line": " at [Source: (File); line: 3, column: 14] (through reference chain: swervelib.parser.json.PhysicalPropertiesJson[\"conversionFactor\"]->swervelib.parser.json.MotorConfigDouble[\"drive\"])"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.64227294921875,
+        "seqNumber": 197,
+        "line": "\tat com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.64350128173828,
+        "seqNumber": 198,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1752)"
+    },
+    {
+        "timestamp": 17.643646240234375,
+        "seqNumber": 199,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "Could not instantiate robot com.fasterxml.jackson.databind.exc.MismatchedInputException!",
+        "location": "edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:389)",
+        "callStack": "",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.64385223388672,
+        "seqNumber": 200,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1526)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.646202087402344,
+        "seqNumber": 201,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1431)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.646812438964844,
+        "seqNumber": 202,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.extractScalarFromObject(DeserializationContext.java:943)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.647117614746094,
+        "seqNumber": 203,
+        "line": "\tat com.fasterxml.jackson.databind.deser.std.StdDeserializer._parseDoublePrimitive(StdDeserializer.java:1139)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.647552490234375,
+        "seqNumber": 204,
+        "line": "\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:682)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.64800262451172,
+        "seqNumber": 205,
+        "line": "\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:663)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.648284912109375,
+        "seqNumber": 206,
+        "line": "\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.64856719970703,
+        "seqNumber": 207,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.648841857910156,
+        "seqNumber": 208,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.64911651611328,
+        "seqNumber": 209,
+        "line": "\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.649398803710938,
+        "seqNumber": 210,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.64966583251953,
+        "seqNumber": 211,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.64995574951172,
+        "seqNumber": 212,
+        "line": "\tat com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:323)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.650222778320312,
+        "seqNumber": 213,
+        "line": "\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4825)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.650489807128906,
+        "seqNumber": 214,
+        "line": "\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3637)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.65123748779297,
+        "seqNumber": 215,
+        "line": "\tat swervelib.parser.SwerveParser.<init>(SwerveParser.java:60)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.651519775390625,
+        "seqNumber": 216,
+        "line": "\tat frc.robot.subsystems.SwerveSubsystem.<init>(SwerveSubsystem.java:41)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.651771545410156,
+        "seqNumber": 217,
+        "line": "\tat frc.robot.RobotContainer.<init>(RobotContainer.java:28)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.652008056640625,
+        "seqNumber": 218,
+        "line": "\tat frc.robot.Robot.<init>(Robot.java:28)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.652267456054688,
+        "seqNumber": 219,
+        "line": "\tat edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:370)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.65251922607422,
+        "seqNumber": 220,
+        "line": "\tat edu.wpi.first.wpilibj.RobotBase.startRobot(RobotBase.java:510)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.65338897705078,
+        "seqNumber": 221,
+        "line": "\tat frc.robot.Main.main(Main.java:23)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.65361785888672,
+        "seqNumber": 222,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.653953552246094,
+        "seqNumber": 223,
+        "line": "Error at edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:383): The robot program quit unexpectedly. This is usually due to a code error."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.654441833496094,
+        "seqNumber": 224,
+        "line": "  The above stacktrace can help determine where the error occurred."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.654708862304688,
+        "seqNumber": 225,
+        "line": "  See https://wpilib.org/stacktrace for more information."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.654930114746094,
+        "seqNumber": 226,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 17.655235290527344,
+        "seqNumber": 227,
+        "line": "Error at edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:389): Could not instantiate robot com.fasterxml.jackson.databind.exc.MismatchedInputException!"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 28.19654083251953,
+        "seqNumber": 228,
+        "line": "********** Robot program starting **********"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 28.22247314453125,
+        "seqNumber": 229,
+        "line": "NT: Listening on NT3 port 1735, NT4 port 5810"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 28.72724151611328,
+        "seqNumber": 230,
+        "line": "NT: Got a NT4 connection from 10.55.86.156 port 59781"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 28.730926513671875,
+        "seqNumber": 231,
+        "line": "NT: CONNECTED NT4 client 'shuffleboard@1' (from 10.55.86.156:59781)"
+    },
+    {
+        "timestamp": 31.68878173828125,
+        "seqNumber": 232,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "Unhandled exception instantiating robot com.fasterxml.jackson.databind.exc.MismatchedInputException com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type `double` from Object value (token `JsonToken.START_OBJECT`)\n at [Source: (File); line: 3, column: 14] (through reference chain: swervelib.parser.json.PhysicalPropertiesJson[\"conversionFactor\"]->swervelib.parser.json.MotorConfigDouble[\"drive\"])",
+        "location": "com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)",
+        "callStack": "\tat com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)\n\tat com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1752)\n\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1526)\n\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1431)\n\tat com.fasterxml.jackson.databind.DeserializationContext.extractScalarFromObject(DeserializationContext.java:943)\n\tat com.fasterxml.jackson.databind.deser.std.StdDeserializer._parseDoublePrimitive(StdDeserializer.java:1139)\n\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:682)\n\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:663)\n\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)\n\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)\n\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)\n\tat com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:323)\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4825)\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3637)\n\tat swervelib.parser.SwerveParser.<init>(SwerveParser.java:60)\n\tat frc.robot.subsystems.SwerveSubsystem.<init>(SwerveSubsystem.java:41)\n\tat frc.robot.RobotContainer.<init>(RobotContainer.java:28)\n\tat frc.robot.Robot.<init>(Robot.java:28)\n\tat edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:370)\n\tat edu.wpi.first.wpilibj.RobotBase.startRobot(RobotBase.java:510)\n\tat frc.robot.Main.main(Main.java:23)\n",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.689804077148438,
+        "seqNumber": 233,
+        "line": "Error at com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59): Unhandled exception instantiating robot com.fasterxml.jackson.databind.exc.MismatchedInputException com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type `double` from Object value (token `JsonToken.START_OBJECT`)"
+    },
+    {
+        "timestamp": 31.692123413085938,
+        "seqNumber": 234,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "The robot program quit unexpectedly. This is usually due to a code error.\n  The above stacktrace can help determine where the error occurred.\n  See https://wpilib.org/stacktrace for more information.\n",
+        "location": "edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:383)",
+        "callStack": "",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.69261932373047,
+        "seqNumber": 235,
+        "line": " at [Source: (File); line: 3, column: 14] (through reference chain: swervelib.parser.json.PhysicalPropertiesJson[\"conversionFactor\"]->swervelib.parser.json.MotorConfigDouble[\"drive\"])"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.693038940429688,
+        "seqNumber": 236,
+        "line": "\tat com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.693504333496094,
+        "seqNumber": 237,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1752)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.693862915039062,
+        "seqNumber": 238,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1526)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.694190979003906,
+        "seqNumber": 239,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1431)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.69463348388672,
+        "seqNumber": 240,
+        "line": "\tat com.fasterxml.jackson.databind.DeserializationContext.extractScalarFromObject(DeserializationContext.java:943)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.694976806640625,
+        "seqNumber": 241,
+        "line": "\tat com.fasterxml.jackson.databind.deser.std.StdDeserializer._parseDoublePrimitive(StdDeserializer.java:1139)"
+    },
+    {
+        "timestamp": 31.69524383544922,
+        "seqNumber": 242,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "Could not instantiate robot com.fasterxml.jackson.databind.exc.MismatchedInputException!",
+        "location": "edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:389)",
+        "callStack": "",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.695709228515625,
+        "seqNumber": 243,
+        "line": "\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:682)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.696075439453125,
+        "seqNumber": 244,
+        "line": "\tat com.fasterxml.jackson.databind.deser.std.NumberDeserializers$DoubleDeserializer.deserialize(NumberDeserializers.java:663)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.6982421875,
+        "seqNumber": 245,
+        "line": "\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.698577880859375,
+        "seqNumber": 246,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.69886016845703,
+        "seqNumber": 247,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.69915008544922,
+        "seqNumber": 248,
+        "line": "\tat com.fasterxml.jackson.databind.deser.impl.FieldProperty.deserializeAndSet(FieldProperty.java:138)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.699432373046875,
+        "seqNumber": 249,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:314)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.69970703125,
+        "seqNumber": 250,
+        "line": "\tat com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.70000457763672,
+        "seqNumber": 251,
+        "line": "\tat com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:323)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.700271606445312,
+        "seqNumber": 252,
+        "line": "\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4825)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.700538635253906,
+        "seqNumber": 253,
+        "line": "\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3637)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.701248168945312,
+        "seqNumber": 254,
+        "line": "\tat swervelib.parser.SwerveParser.<init>(SwerveParser.java:60)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.701522827148438,
+        "seqNumber": 255,
+        "line": "\tat frc.robot.subsystems.SwerveSubsystem.<init>(SwerveSubsystem.java:41)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.7017822265625,
+        "seqNumber": 256,
+        "line": "\tat frc.robot.RobotContainer.<init>(RobotContainer.java:28)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.7020263671875,
+        "seqNumber": 257,
+        "line": "\tat frc.robot.Robot.<init>(Robot.java:28)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.70227813720703,
+        "seqNumber": 258,
+        "line": "\tat edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:370)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.702537536621094,
+        "seqNumber": 259,
+        "line": "\tat edu.wpi.first.wpilibj.RobotBase.startRobot(RobotBase.java:510)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.70281219482422,
+        "seqNumber": 260,
+        "line": "\tat frc.robot.Main.main(Main.java:23)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.703048706054688,
+        "seqNumber": 261,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.70337677001953,
+        "seqNumber": 262,
+        "line": "Error at edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:383): The robot program quit unexpectedly. This is usually due to a code error."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.703643798828125,
+        "seqNumber": 263,
+        "line": "  The above stacktrace can help determine where the error occurred."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.703895568847656,
+        "seqNumber": 264,
+        "line": "  See https://wpilib.org/stacktrace for more information."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.704116821289062,
+        "seqNumber": 265,
+        "line": ""
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.704421997070312,
+        "seqNumber": 266,
+        "line": "Error at edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:389): Could not instantiate robot com.fasterxml.jackson.databind.exc.MismatchedInputException!"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 42.27967071533203,
+        "seqNumber": 267,
+        "line": "********** Robot program starting **********"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 42.30915069580078,
+        "seqNumber": 268,
+        "line": "NT: Listening on NT3 port 1735, NT4 port 5810"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 42.75196075439453,
+        "seqNumber": 269,
+        "line": "NT: Got a NT4 connection from 10.55.86.156 port 59800"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 42.757713317871094,
+        "seqNumber": 270,
+        "line": "NT: CONNECTED NT4 client 'shuffleboard@1' (from 10.55.86.156:59800)"
+    }
+]
