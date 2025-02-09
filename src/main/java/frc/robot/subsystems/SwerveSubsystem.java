@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.io.File;
+import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
@@ -12,19 +13,21 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
-import swervelib.SwerveModule;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+import frc.robot.trajectories.AutoTrajectory;
 
 public class SwerveSubsystem extends SubsystemBase {
 
@@ -131,6 +134,25 @@ public class SwerveSubsystem extends SubsystemBase {
   public void zeroGyro() {
     m_swerveDrive.zeroGyro();
   }
+
+	public SwerveControllerCommand generateCommand(AutoTrajectory trajectory) {
+
+		Consumer<SwerveModuleState[]> moduleStateConsumer = (states) -> {
+			m_swerveDrive.setModuleStates(states, false);
+		};
+
+		return new SwerveControllerCommand(
+				trajectory.getTrajectory(),
+				m_swerveDrive::getPose,
+				m_swerveDrive.kinematics,
+				trajectory.getController('x'),
+				trajectory.getController('y'),
+				trajectory.getThetaController(),
+				moduleStateConsumer,
+				this
+		);
+	}
+
 
   @Override
   public void periodic() {
