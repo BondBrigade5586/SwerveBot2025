@@ -5,9 +5,15 @@
 package frc.robot;
 
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.trajectories.AutoTrajectory;
+import frc.robot.autonomous.AutoTrajectory;
 import swervelib.SwerveInputStream;
+
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -26,14 +32,22 @@ public class RobotContainer {
   public final SwerveSubsystem m_swerveSubsystem;
 	private final AutoTrajectory m_autoTrajectory;
 	private SwerveControllerCommand m_driveForwardCommand;
+	Trigger m_autoTrigger;
 
   SwerveInputStream m_angularVelocity;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
     m_swerveSubsystem = new SwerveSubsystem();
     configureBindings();
+
+		//This command will trigger when the robot is close to the defined point TESTING!!
+		m_autoTrigger = m_swerveSubsystem.distanceTrigger(1, 1, 1, 0.1);
+		m_autoTrigger.onTrue(new SequentialCommandGroup(
+														 //Rotate to right angle
+														 new InstantCommand(),
+														 //Release coral
+														 new InstantCommand()));
 
 		m_autoTrajectory = new AutoTrajectory(1.0, 1.0);
 		m_autoTrajectory.pushPosition(0.0, -2.0, 0.0);

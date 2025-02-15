@@ -5,21 +5,28 @@
 package frc.robot.subsystems;
 
 import java.io.File;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
@@ -27,7 +34,7 @@ import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-import frc.robot.trajectories.AutoTrajectory;
+import frc.robot.autonomous.AutoTrajectory;
 
 public class SwerveSubsystem extends SubsystemBase {
 
@@ -141,6 +148,8 @@ public class SwerveSubsystem extends SubsystemBase {
 			m_swerveDrive.setModuleStates(states, false);
 		};
 
+		m_swerveDrive.getPose();
+
 		return new SwerveControllerCommand(
 				trajectory.getTrajectory(),
 				m_swerveDrive::getPose,
@@ -154,8 +163,21 @@ public class SwerveSubsystem extends SubsystemBase {
 	}
 
 
+	public BooleanSupplier isNearPoint(double x, double y, double rotation, double margin) {
+		//Stop triggers from triggering in teleop.
+		if (!DriverStation.isAutonomous()) return () ->false;
+		Translation2d currentPoint = m_swerveDrive.getPose().getTranslation();
+		Translation2d paramPoint = new Translation2d(x, y);
+		return () -> currentPoint.getDistance(paramPoint) <= margin;
+	}
+
+	public Trigger distanceTrigger(double x, double y, double r, double margin) {
+		return new Trigger(isNearPoint(x, y, r, margin));
+	}
+
   @Override
   public void periodic() {
+		SmartDashboard.putString("Swerve Pose", "X: " + m_swerveDrive.getPose().getX() + ", Y: " + m_swerveDrive.getPose().getY());
     return;
   }
 }
