@@ -101,24 +101,20 @@ public class SwerveSubsystem extends SubsystemBase {
       m_swerveDrive.drive(new Translation2d(translationX.getAsDouble() * m_swerveDrive.getMaximumChassisVelocity(),
                                           translationY.getAsDouble() * m_swerveDrive.getMaximumChassisVelocity()),
                         angularRotationX.getAsDouble() * m_swerveDrive.getMaximumChassisAngularVelocity(),
-                        Constants.SwerveConstants.isFieldOriented,
+                        true,
                         false);
     });
   }
 
   public SwerveInputStream getAngularVelocity(CommandXboxController controller) {
-    SwerveInputStream velocity = SwerveInputStream.of(
+    return SwerveInputStream.of(
       m_swerveDrive,
       () -> controller.getLeftY() * -1,
-      () -> controller.getLeftX() * -1);
-
-    velocity
+      () -> controller.getLeftX() * -1)
       .withControllerRotationAxis(controller::getRightX)
       .deadband(Constants.OperatorConstants.controllerDeadband)
       .scaleTranslation(0.8)
       .allianceRelativeControl(true);
-
-    return velocity;
   }
 
   public void driveFieldOriented(ChassisSpeeds velocity) {
@@ -178,6 +174,7 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
 		SmartDashboard.putString("Swerve Pose", "X: " + m_swerveDrive.getPose().getX() + ", Y: " + m_swerveDrive.getPose().getY());
+    SmartDashboard.putNumber(("Swerve Yaw"), m_swerveDrive.getGyro().getRawRotation3d().getAngle());
     return;
   }
 }

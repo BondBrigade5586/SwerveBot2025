@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
     public static final double controllerDeadband = 0.3;
   }
 
@@ -32,8 +33,8 @@ public final class Constants {
 
   public static class SwerveConstants {
     //                      Max speed of the robot in feet
-    public static final double maxSpeed = 4.5;
-    public static boolean isFieldOriented = false;
+    public static final double maxSpeed = 9;
+    public static boolean isFieldOriented = true;
   }
 
 	public static class AlgaeConstants {
@@ -61,8 +62,14 @@ public final class Constants {
 		public static final double elevatorMotorTwoP = 0.002, elevatorMotorTwoI = 0.0, elevatorMotorTwoD = 0.0;
 		public static final boolean elevatorMotorInverted = false, elevatorMotorTwoInverted = false;
 
-		int trolleyMotorId = -1;
+		public static final int trolleyMotorId = -1;
 		public static final double trolleyMotorP = 0.002, trolleyMotorI = 0.0, trolleyMotorD = 0.0;
 		public static final boolean trolleyMotorInverted = false;
+	}
+
+	public static class ClimberConstants {
+		public static final int motorId = 20;
+		public static final double p = 0.001, i = 0, d = 0;
+		public static final double maxMotorSpeed = 300;
 	}
 }
