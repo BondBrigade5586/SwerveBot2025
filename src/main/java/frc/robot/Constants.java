@@ -71,5 +71,6 @@ public final class Constants {
 		public static final int motorId = 20;
 		public static final double p = 0.001, i = 0, d = 0;
 		public static final double maxMotorSpeed = 300;
+		public static final double maxMotorPos = 360, minMotorPos = 0;
 	}
 }
