@@ -1,12 +1,11 @@
 package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
-import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -24,6 +23,12 @@ public class ClimberSubsystem extends SubsystemBase {
 	public BooleanSupplier withinBounds() {
 		return () -> (getPosition() <= ClimberConstants.maxMotorPos && getPosition() >= ClimberConstants.minMotorPos);
 	}
+	
+	public BooleanSupplier inputIsValid(int speed) {
+		if (getPosition() >= ClimberConstants.maxMotorPos && speed == 1) return () -> false;
+		if (getPosition() <= ClimberConstants.minMotorPos && speed == -1) return () -> false;
+		return () -> true;
+	}
 
 	public BooleanSupplier atSetPosition(double position) {
 		return () -> (getPosition() < position + 0.1 && getPosition() > position - 0.1);
@@ -34,22 +39,30 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public void moveMotor(int directionMult) {
+		
+		if (getPosition() >= ClimberConstants.maxMotorPos && directionMult == 1) return;
+		if (getPosition() <= ClimberConstants.minMotorPos && directionMult == -1) return;
+		
 		m_motor.setPIDVelocity(ClimberConstants.maxMotorSpeed * 0.5 * directionMult);
 	}
 
 	public Command rotateCommand(double mult) {
-		System.out.println("CLIMBER - rotate");
-		
-
 		final double effectiveMult = (mult >= 0) ? mult % 1 : (Math.abs(mult) % 1) * -1;
 		return this.run(() -> {
 			m_motor.setPIDVelocity(ClimberConstants.maxMotorSpeed * effectiveMult);
-		}).onlyWhile(withinBounds()).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
+		});
 	}
 
 	public Command jogMotorCommand(int speed) {
-		// return this.runOnce(() -> moveMotor(speed));
-		return this.run(() -> moveMotor(speed));
+		return this.run(() -> {
+			moveMotor(speed);
+		});
+	}
+
+	public void cancelCurrentCommand() {
+		Command currentCommand = this.getCurrentCommand();
+		if (currentCommand == null) return;
+		currentCommand.cancel();
 	}
 
 	public Command stopMotorCommand() {
@@ -59,5 +72,7 @@ public class ClimberSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		SmartDashboard.putNumber("Climber Position", getPosition());
+		SmartDashboard.putBoolean("Climber in bounds", withinBounds().getAsBoolean());
 	}
 }
+

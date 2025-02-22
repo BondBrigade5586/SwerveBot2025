@@ -9,20 +9,13 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.autonomous.AutoTrajectory;
+import frc.robot.commands.RotateClimber;
 import swervelib.SwerveInputStream;
-
-import java.util.function.BooleanSupplier;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -36,8 +29,9 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController;
-  private final Joystick m_operatorController;
-  private final JoystickButton m_operatorLeftBumper, m_operatorRightBumper;
+  // private final Joystick m_operatorController;
+  private final CommandXboxController m_operatorController;
+  // private final JoystickButton m_operatorLeftBumper, m_operatorRightBumper;
   public final SwerveSubsystem m_swerveSubsystem;
 	private final AutoTrajectory m_autoTrajectory;
 	private SwerveControllerCommand m_driveForwardCommand;
@@ -49,9 +43,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-    m_operatorController = new Joystick(OperatorConstants.kOperatorControllerPort);
-    m_operatorLeftBumper = new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value);
-    m_operatorRightBumper = new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value);
+    m_operatorController = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+
 
     m_swerveSubsystem = new SwerveSubsystem();
     m_climberSubsystem = new ClimberSubsystem(ClimberConstants.motorId);
@@ -85,18 +78,16 @@ public class RobotContainer {
 
     m_angularVelocity = m_swerveSubsystem.getAngularVelocity(m_driverController);
     Command fieldOrientedDrive = m_swerveSubsystem.driveFieldOriented(m_angularVelocity);
+    Command rotateArm = new RotateClimber(m_climberSubsystem, m_operatorController.rightBumper(), m_operatorController.leftBumper());
 
-    m_operatorLeftBumper.whileTrue(m_climberSubsystem.jogMotorCommand(-1)).onFalse(m_climberSubsystem.stopMotorCommand());
-    m_operatorRightBumper.whileTrue(m_climberSubsystem.jogMotorCommand(1)).onFalse(m_climberSubsystem.stopMotorCommand());
+    m_swerveSubsystem.setDefaultCommand(fieldOrientedDrive);
+    m_climberSubsystem.setDefaultCommand(rotateArm);
 
     //Command driveFieldOrientedDirectAngle = m_swerveSubsystem.driveCommand(
     //    () -> MathUtil.applyDeadband(m_driverController.getLeftY(), OperatorConstants.controllerDeadband),
     //    () -> MathUtil.applyDeadband(m_driverController.getLeftX(), OperatorConstants.controllerDeadband),
     //    () -> m_driverController.getRightX(),
     //    () -> m_driverController.getRightY());
-        
-    m_swerveSubsystem.setDefaultCommand(fieldOrientedDrive);
-
   }
 
   /**
