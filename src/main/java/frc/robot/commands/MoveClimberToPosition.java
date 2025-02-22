@@ -25,6 +25,9 @@ class MoveClimberToPosition extends Command {
 
 	@Override
 	public boolean isFinished() {
-		return (m_climberSubsystem.atSetPosition(m_position).getAsBoolean() | !m_climberSubsystem.withinBounds().getAsBoolean());
+		return (
+			m_climberSubsystem.atSetPosition(m_position).getAsBoolean()
+			| !m_climberSubsystem.withinBounds().getAsBoolean()
+		);
 	}
 }

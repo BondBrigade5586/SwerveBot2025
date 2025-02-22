@@ -39,7 +39,7 @@ public final class Constants {
 
 	public static class AlgaeConstants {
 		public static final int motorId = -1, motorTwoId = -1;
-		public static final double p = 0.002, i = 0.0, d = 0.0;
+		public static final double p = 0.001, i = 0.0, d = 0.0;
 		public static final double maxSpeed = 0;
 		public static final boolean motorInverted = true, motorTwoInverted = false;
 	}
@@ -69,8 +69,9 @@ public final class Constants {
 
 	public static class ClimberConstants {
 		public static final int motorId = 20;
-		public static final double p = 0.001, i = 0, d = 0;
-		public static final double maxMotorSpeed = 300;
+		public static final double p = 0.00075, i = 0, d = 0;
+		public static final double maxMotorSpeed = 400;
 		public static final double maxMotorPos = 360, minMotorPos = 0;
+		public static final boolean isInverted = true;
 	}
 }

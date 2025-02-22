@@ -86,9 +86,8 @@ public class RobotContainer {
     m_angularVelocity = m_swerveSubsystem.getAngularVelocity(m_driverController);
     Command fieldOrientedDrive = m_swerveSubsystem.driveFieldOriented(m_angularVelocity);
 
-		// FIXME - testing
-    // m_operatorLeftBumper.whileTrue(m_climberSubsystem.roate(-0.5).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    // m_operatorRightBumper.whileTrue(m_climberSubsystem.roate(0.5).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    m_operatorLeftBumper.whileTrue(m_climberSubsystem.jogMotorCommand(-1)).onFalse(m_climberSubsystem.stopMotorCommand());
+    m_operatorRightBumper.whileTrue(m_climberSubsystem.jogMotorCommand(1)).onFalse(m_climberSubsystem.stopMotorCommand());
 
     //Command driveFieldOrientedDirectAngle = m_swerveSubsystem.driveCommand(
     //    () -> MathUtil.applyDeadband(m_driverController.getLeftY(), OperatorConstants.controllerDeadband),

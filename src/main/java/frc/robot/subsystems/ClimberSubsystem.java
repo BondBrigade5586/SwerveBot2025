@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.ClimberConstants;
 
@@ -13,8 +14,8 @@ public class ClimberSubsystem extends SubsystemBase {
 	DutyCycleEncoder m_throughBoreEncoder;
 	public ClimberSubsystem(int motorId) {
 		m_motor = new Motor(motorId, 20);
-		m_motor.setPid(AlgaeConstants.p, AlgaeConstants.i, AlgaeConstants.d);
-		m_motor.setInverted(AlgaeConstants.motorInverted);
+		m_motor.setPid(ClimberConstants.p, ClimberConstants.i, ClimberConstants.d);
+		m_motor.setInverted(ClimberConstants.isInverted);
 		m_motor.burnConfig();
 		m_throughBoreEncoder = new DutyCycleEncoder(0);
 
@@ -29,30 +30,30 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public double getPosition() {
-		return m_throughBoreEncoder.get();
-	}
-
-	public Command moveToRotation(double rotation) {
-		int rotationMult;
-		if (rotation < 0) rotation += 360;
-		rotation %= 360;
-		rotationMult = (rotation < getPosition()) ? -1 : 1;
-		return run(() -> {
-			m_motor.setSpeed(ClimberConstants.maxMotorSpeed * 0.5 * rotationMult);
-		}).onlyWhile(withinBounds());
+		return m_throughBoreEncoder.get() * 360;
 	}
 
 	public void moveMotor(int directionMult) {
-		m_motor.setSpeed(ClimberConstants.maxMotorSpeed * 0.5 * directionMult);
+		m_motor.setPIDVelocity(ClimberConstants.maxMotorSpeed * 0.5 * directionMult);
 	}
 
 	public Command rotateCommand(double mult) {
 		System.out.println("CLIMBER - rotate");
+		
 
 		final double effectiveMult = (mult >= 0) ? mult % 1 : (Math.abs(mult) % 1) * -1;
-		return run(() -> {
-			m_motor.setSpeed(ClimberConstants.maxMotorSpeed * effectiveMult);
-		}).onlyWhile(withinBounds());
+		return this.run(() -> {
+			m_motor.setPIDVelocity(ClimberConstants.maxMotorSpeed * effectiveMult);
+		}).onlyWhile(withinBounds()).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
+	}
+
+	public Command jogMotorCommand(int speed) {
+		// return this.runOnce(() -> moveMotor(speed));
+		return this.run(() -> moveMotor(speed));
+	}
+
+	public Command stopMotorCommand() {
+		return this.runOnce(() -> moveMotor(0));
 	}
 
 	@Override
