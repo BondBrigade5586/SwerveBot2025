@@ -10,11 +10,16 @@ import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -25,6 +30,12 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
+import frc.robot.Constants.AutoConstants;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
 import swervelib.math.SwerveMath;
@@ -38,6 +49,9 @@ public class SwerveSubsystem extends SubsystemBase {
   private File m_file;
   private double m_maxSpeed;
   private SwerveDrive m_swerveDrive;
+  private PIDController m_xController, m_yController;
+  private ProfiledPIDController m_thetaController;
+  private RobotConfig m_config;
   
   /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem() {
@@ -54,7 +68,42 @@ public class SwerveSubsystem extends SubsystemBase {
       throw new RuntimeException(err);
     }
 
+    try{
+      m_config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+    }
+
     zeroGyro();
+
+    m_xController = new PIDController(AutoConstants.autoXController, 0, 0);
+    m_yController = new PIDController(AutoConstants.autoYController, 0, 0);
+    m_thetaController = new ProfiledPIDController(
+			AutoConstants.autoThetaControllerVal,
+			0.0,
+			0.0,
+			AutoConstants.autoThetaControllerConstraints
+		);
+
+    AutoBuilder.configure(
+      this::getPose,
+      m_swerveDrive::resetOdometry,
+      m_swerveDrive::getRobotVelocity, 
+      (speed, feedForward) -> driveFieldOriented(speed), 
+      new PPHolonomicDriveController(
+        new PIDConstants(2.43, 0, 0), 
+        new PIDConstants(2.477, 0, 0)
+      ), 
+      m_config, 
+      () -> {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      }, 
+      this);
 
   }
 
@@ -135,6 +184,26 @@ public class SwerveSubsystem extends SubsystemBase {
 		);
 	}
 
+	public SwerveControllerCommand generateCommand(Trajectory trajectory) {
+
+		Consumer<SwerveModuleState[]> moduleStateConsumer = (states) -> {
+			m_swerveDrive.setModuleStates(states, false);
+		};
+
+		return new SwerveControllerCommand(
+				trajectory,
+				m_swerveDrive::getPose,
+				m_swerveDrive.kinematics,
+        m_xController,
+				m_yController,
+				m_thetaController,
+				moduleStateConsumer,
+				this
+		);
+	}
+
+  
+
   public SwerveInputStream getAngularVelocity(CommandXboxController controller) {
     return SwerveInputStream.of(
       m_swerveDrive,
@@ -146,12 +215,27 @@ public class SwerveSubsystem extends SubsystemBase {
                                       .allianceRelativeControl(true);
   }
 
+  public SwerveDriveKinematics getKinematics() {
+    return m_swerveDrive.kinematics;
+  }
+
   public SwerveModulePosition[] getModuleStates() {
     return m_swerveDrive.getModulePositions();
   }
 
+  public Consumer<SwerveModuleState[]> getModuleStateConsumer() {
+    return (states) -> {
+			m_swerveDrive.setModuleStates(states, false);
+		};
+  }
+
   public Rotation2d getPitch() {
+    m_swerveDrive.getPose();
     return m_swerveDrive.getPitch();
+  }
+
+  public Pose2d getPose() {
+    return m_swerveDrive.getPose();
   }
 
 	public BooleanSupplier isNearPoint(double x, double y, double rotation, double margin) {

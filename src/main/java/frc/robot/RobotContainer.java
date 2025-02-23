@@ -6,11 +6,25 @@ package frc.robot;
 
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.autonomous.AutoTrajectory;
 import frc.robot.commands.RotateClimber;
 import swervelib.SwerveInputStream;
+
+import java.util.ArrayList;
+
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -33,7 +47,7 @@ public class RobotContainer {
   private final CommandXboxController m_operatorController;
   // private final JoystickButton m_operatorLeftBumper, m_operatorRightBumper;
   public final SwerveSubsystem m_swerveSubsystem;
-	private final AutoTrajectory m_autoTrajectory;
+	private AutoTrajectory m_autoTrajectory;
 	private SwerveControllerCommand m_driveForwardCommand;
   private final ClimberSubsystem m_climberSubsystem;
 	Trigger m_autoTrigger;
@@ -58,10 +72,13 @@ public class RobotContainer {
 														 //Release coral
 														 new InstantCommand()));
 
-		m_autoTrajectory = new AutoTrajectory(1.0, 1.0);
-		m_autoTrajectory.pushPosition(0.0, -2.0, 0.0);
-		m_autoTrajectory.generateTrajectory();
-		m_driveForwardCommand = m_swerveSubsystem.generateCommand(m_autoTrajectory);
+    TrajectoryConfig m_trajectoryConfig = new TrajectoryConfig(Units.feetToMeters(3), Units.feetToMeters(2))
+      .setKinematics(m_swerveSubsystem.getKinematics());
+		m_autoTrajectory = new AutoTrajectory(AutoConstants.maxVelocity, AutoConstants.maxAcceleration);
+    // m_autoTrajectory.modifyStartPosition(new Pose2d(Units.inchesToMeters(297.5), Units.inchesToMeters(241.44), Rotation2d.fromDegrees(0)));
+		// m_autoTrajectory.translate(-1 * Units.inchesToMeters(88), 0.0);
+		// m_autoTrajectory.generateTrajectory();
+		// m_driveForwardCommand = m_swerveSubsystem.generateCommand(m_autoTrajectory);
 
   }
 
@@ -78,7 +95,11 @@ public class RobotContainer {
 
     m_angularVelocity = m_swerveSubsystem.getAngularVelocity(m_driverController);
     Command fieldOrientedDrive = m_swerveSubsystem.driveFieldOriented(m_angularVelocity);
-    Command rotateArm = new RotateClimber(m_climberSubsystem, m_operatorController.rightBumper(), m_operatorController.leftBumper());
+    Command rotateArm = new RotateClimber(
+      m_climberSubsystem, 
+      m_operatorController.leftBumper(), 
+      m_operatorController.rightBumper()
+    );
 
     m_swerveSubsystem.setDefaultCommand(fieldOrientedDrive);
     m_climberSubsystem.setDefaultCommand(rotateArm);
@@ -91,6 +112,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_driveForwardCommand;
+    return new PathPlannerAuto("Test Auto");
   }
 }

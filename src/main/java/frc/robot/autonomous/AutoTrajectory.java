@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -21,6 +22,7 @@ public class AutoTrajectory {
 	private TrajectoryConfig m_trajectoryConfig;
 	private PIDController m_xController;
 	private PIDController m_yController;
+	private double m_xPos = 0, m_yPos = 0;
 
 	private ProfiledPIDController m_thetaController;
 
@@ -38,6 +40,10 @@ public class AutoTrajectory {
 
 	public void generateTrajectory() {
 		m_trajectory = TrajectoryGenerator.generateTrajectory(m_poseList, m_trajectoryConfig);
+	}
+
+	public void generateTrajectory(ArrayList<Pose2d> list) {
+		m_trajectory = TrajectoryGenerator.generateTrajectory(list, m_trajectoryConfig);
 	}
 
 	public PIDController getYController() {
@@ -81,6 +87,11 @@ public class AutoTrajectory {
 		m_poseList.add(m_pos);
 	}
 
+	public void translate(double x, double y) {
+		Transform2d transform = new Transform2d(x, y, Rotation2d.fromDegrees(0.0));
+		m_poseList.add(m_poseList.get(m_poseList.size() - 1).plus(transform));
+	}
+
 	public void transform(Transform2d transform) {
 		Pose2d tempPose = m_poseList.get(m_poseList.size() - 1);
 		tempPose.transformBy(transform);
@@ -92,7 +103,7 @@ public class AutoTrajectory {
 		m_yController = new PIDController(AutoConstants.autoYController, 0.0, 0.0);
 
 		m_thetaController = new ProfiledPIDController(
-			AutoConstants.autoThetaController,
+			AutoConstants.autoThetaControllerVal,
 			0.0,
 			0.0,
 			AutoConstants.autoThetaControllerConstraints

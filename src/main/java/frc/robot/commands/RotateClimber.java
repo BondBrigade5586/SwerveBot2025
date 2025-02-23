@@ -4,9 +4,11 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ClimberSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -34,10 +36,10 @@ public class RotateClimber extends Command {
       return;
     }
 
-    if (m_forwardTrigger.getAsBoolean() == true) {
+    if (m_forwardTrigger.getAsBoolean()) {
       if (m_subsystem.getPosition() > ClimberConstants.maxMotorPos) return;
       m_subsystem.moveMotor(1);
-    } else if (m_backwardTrigger.getAsBoolean() == true) {
+    } else if (m_backwardTrigger.getAsBoolean()) {
       if (m_subsystem.getPosition() < ClimberConstants.minMotorPos) return;
       m_subsystem.moveMotor(-1);
     }
@@ -53,6 +55,7 @@ public class RotateClimber extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // return !DriverStation.isJoystickConnected(OperatorConstants.kOperatorControllerPort);
     return false;
   }
 }

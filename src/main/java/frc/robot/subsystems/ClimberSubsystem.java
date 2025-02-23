@@ -53,7 +53,7 @@ public class ClimberSubsystem extends SubsystemBase {
 		if (getPosition() >= ClimberConstants.maxMotorPos && directionMult == 1) return;
 		if (getPosition() <= ClimberConstants.minMotorPos && directionMult == -1) return;
 		
-		m_motor.setPIDVelocity(ClimberConstants.maxMotorSpeed * 0.5 * directionMult);
+		m_motor.setPIDVelocity(ClimberConstants.maxMotorSpeed * directionMult);
 	}
 
 	public Command rotateCommand(double mult) {

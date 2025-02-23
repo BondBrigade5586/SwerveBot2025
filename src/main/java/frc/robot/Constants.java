@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 /**
@@ -24,11 +25,19 @@ public final class Constants {
 	public static class AutoConstants {
 		public static final double autoXController = 0.001;
 		public static final double autoYController = 0.001;
-		public static final double autoThetaController = 0;
+		public static final double autoThetaControllerVal = 0.001;
+		public static ProfiledPIDController autoThetaController = new ProfiledPIDController(
+			AutoConstants.autoThetaControllerVal,
+			0.0,
+			0.0,
+			AutoConstants.autoThetaControllerConstraints
+		);
 		public static final TrapezoidProfile.Constraints autoThetaControllerConstraints = new TrapezoidProfile.Constraints(
 				4 * Math.PI / 10,
 				Math.PI / 4
 		);
+		//Measured in feet per second and feet per second squared respectfully.
+		public static final double maxVelocity = 3, maxAcceleration = 2;
 	}
 
 	public static class AlgaeConstants {
