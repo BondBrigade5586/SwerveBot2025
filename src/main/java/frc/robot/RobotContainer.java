@@ -42,16 +42,16 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    m_climberSubsystem = new ClimberSubsystem(ClimberConstants.motorId);
+    m_swerveSubsystem = new SwerveSubsystem();
+
     m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
     m_operatorController = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
-
-
-    m_swerveSubsystem = new SwerveSubsystem();
-    m_climberSubsystem = new ClimberSubsystem(ClimberConstants.motorId);
     configureBindings();
 
 		//This command will trigger when the robot is close to the defined point TESTING!!
-		m_autoTrigger = m_swerveSubsystem.distanceTrigger(1, 1, 1, 0.1);
+		m_autoTrigger = m_swerveSubsystem.createDistanceTrigger(1, 1, 1, 0.1);
 		m_autoTrigger.onTrue(new SequentialCommandGroup(
 														 //Rotate to right angle
 														 new InstantCommand(),
@@ -83,11 +83,6 @@ public class RobotContainer {
     m_swerveSubsystem.setDefaultCommand(fieldOrientedDrive);
     m_climberSubsystem.setDefaultCommand(rotateArm);
 
-    //Command driveFieldOrientedDirectAngle = m_swerveSubsystem.driveCommand(
-    //    () -> MathUtil.applyDeadband(m_driverController.getLeftY(), OperatorConstants.controllerDeadband),
-    //    () -> MathUtil.applyDeadband(m_driverController.getLeftX(), OperatorConstants.controllerDeadband),
-    //    () -> m_driverController.getRightX(),
-    //    () -> m_driverController.getRightY());
   }
 
   /**

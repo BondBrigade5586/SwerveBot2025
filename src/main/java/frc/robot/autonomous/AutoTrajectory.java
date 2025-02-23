@@ -1,29 +1,28 @@
 package frc.robot.autonomous;
 
 import java.util.ArrayList;
-import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AutoConstants;
 
 public class AutoTrajectory {
 
-	Trajectory m_trajectory;
-	Pose2d m_startingPos;
-	ArrayList<Pose2d> m_poseList;
-	TrajectoryConfig m_trajectoryConfig;
-	PIDController m_xController;
-	PIDController m_yController;
+	private Trajectory m_trajectory;
+	private Pose2d m_startingPos;
+	private ArrayList<Pose2d> m_poseList;
+	private TrajectoryConfig m_trajectoryConfig;
+	private PIDController m_xController;
+	private PIDController m_yController;
 
-	ProfiledPIDController m_thetaController;
+	private ProfiledPIDController m_thetaController;
 
 	public AutoTrajectory (double maxSpeed, double maxAcceleration) {
 
@@ -41,42 +40,51 @@ public class AutoTrajectory {
 		m_trajectory = TrajectoryGenerator.generateTrajectory(m_poseList, m_trajectoryConfig);
 	}
 
-	public void pushPosition(double x, double y, double rotationDegrees) {
-		Pose2d m_pos = new Pose2d(x, y, Rotation2d.fromDegrees(rotationDegrees));
-		m_poseList.add(m_pos);
+	public PIDController getYController() {
+		return m_yController;
 	}
 
-	public void pushPosition(Pose2d pose) {
-		m_poseList.add(pose);
-
-	}
-
-	public void modifyStartPosition(Pose2d pose) {
-		m_poseList.set(0, pose);
-	}
-
-	public ArrayList<Pose2d> getPositions() {
-		return m_poseList;
-	}
-
-	public PIDController getController(char axis) {
-		return (Character.toLowerCase(axis) == 'y') ? m_yController : m_xController;
-	}
-
-	public ProfiledPIDController getThetaController() {
-		return m_thetaController;
+	public PIDController getXController() {
+		return m_xController;
 	}
 
 	public Pose2d getPoseAtIndex(int i) {
 		return m_poseList.get(i);
 	}
 
-	public double getTrajectoryDuratrion() {
-		return m_trajectory.getTotalTimeSeconds();
+	public ArrayList<Pose2d> getPositions() {
+		return m_poseList;
+	}
+
+	public ProfiledPIDController getThetaController() {
+		return m_thetaController;
 	}
 
 	public Trajectory getTrajectory() {
 		return m_trajectory;
+	}
+
+	public double getTrajectoryDuratrion() {
+		return m_trajectory.getTotalTimeSeconds();
+	}
+
+	public void modifyStartPosition(Pose2d pose) {
+		m_poseList.set(0, pose);
+	}
+
+	public void pushPosition(Pose2d pose) {
+		m_poseList.add(pose);
+	}
+
+	public void pushPosition(double x, double y, double rotationDegrees) {
+		Pose2d m_pos = new Pose2d(x, y, Rotation2d.fromDegrees(rotationDegrees));
+		m_poseList.add(m_pos);
+	}
+
+	public void transform(Transform2d transform) {
+		Pose2d tempPose = m_poseList.get(m_poseList.size() - 1);
+		tempPose.transformBy(transform);
+		m_poseList.add(tempPose);
 	}
 
 	private void configureControllers() {

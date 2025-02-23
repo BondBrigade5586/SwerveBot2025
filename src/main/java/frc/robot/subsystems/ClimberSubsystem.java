@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
-	Motor m_motor;
-	DutyCycleEncoder m_throughBoreEncoder;
+
+	private Motor m_motor;
+	private DutyCycleEncoder m_throughBoreEncoder;
+
 	public ClimberSubsystem(int motorId) {
 		m_motor = new Motor(motorId, 20);
 		m_motor.setPid(ClimberConstants.p, ClimberConstants.i, ClimberConstants.d);
@@ -20,8 +22,18 @@ public class ClimberSubsystem extends SubsystemBase {
 
 	}
 
-	public BooleanSupplier withinBounds() {
-		return () -> (getPosition() <= ClimberConstants.maxMotorPos && getPosition() >= ClimberConstants.minMotorPos);
+	public BooleanSupplier isAtSetPosition(double position) {
+		return () -> (getPosition() < position + 0.1 && getPosition() > position - 0.1);
+	}
+
+	public void cancelCurrentCommand() {
+		Command currentCommand = this.getCurrentCommand();
+		if (currentCommand == null) return;
+		currentCommand.cancel();
+	}
+
+	public double getPosition() {
+		return m_throughBoreEncoder.get() * 360;
 	}
 	
 	public BooleanSupplier inputIsValid(int speed) {
@@ -30,12 +42,10 @@ public class ClimberSubsystem extends SubsystemBase {
 		return () -> true;
 	}
 
-	public BooleanSupplier atSetPosition(double position) {
-		return () -> (getPosition() < position + 0.1 && getPosition() > position - 0.1);
-	}
-
-	public double getPosition() {
-		return m_throughBoreEncoder.get() * 360;
+	public Command jogMotorCommand(int speed) {
+		return this.run(() -> {
+			moveMotor(speed);
+		});
 	}
 
 	public void moveMotor(int directionMult) {
@@ -53,26 +63,18 @@ public class ClimberSubsystem extends SubsystemBase {
 		});
 	}
 
-	public Command jogMotorCommand(int speed) {
-		return this.run(() -> {
-			moveMotor(speed);
-		});
-	}
-
-	public void cancelCurrentCommand() {
-		Command currentCommand = this.getCurrentCommand();
-		if (currentCommand == null) return;
-		currentCommand.cancel();
-	}
-
 	public Command stopMotorCommand() {
 		return this.runOnce(() -> moveMotor(0));
+	}
+
+	public BooleanSupplier isWithinBounds() {
+		return () -> (getPosition() <= ClimberConstants.maxMotorPos && getPosition() >= ClimberConstants.minMotorPos);
 	}
 
 	@Override
 	public void periodic() {
 		SmartDashboard.putNumber("Climber Position", getPosition());
-		SmartDashboard.putBoolean("Climber in bounds", withinBounds().getAsBoolean());
+		SmartDashboard.putBoolean("Climber in bounds", isWithinBounds().getAsBoolean());
 	}
 }
 

@@ -15,11 +15,11 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-    public static final int kOperatorControllerPort = 1;
-    public static final double controllerDeadband = 0.3;
-  }
+	public static class OperatorConstants {
+	  public static final int kDriverControllerPort = 0;
+	  public static final int kOperatorControllerPort = 1;
+	  public static final double controllerDeadband = 0.3;
+	}
 
 	public static class AutoConstants {
 		public static final double autoXController = 0.001;
@@ -30,12 +30,6 @@ public final class Constants {
 				Math.PI / 4
 		);
 	}
-
-  public static class SwerveConstants {
-    //                      Max speed of the robot in feet
-    public static final double maxSpeed = 9;
-    public static boolean isFieldOriented = true;
-  }
 
 	public static class AlgaeConstants {
 		public static final int motorId = -1, motorTwoId = -1;
@@ -50,6 +44,14 @@ public final class Constants {
 		public static final double wheelDriveP = 0.002, wheelDriveI = 0.0, wheelDriveD = 0.0;
 		public static final double angleMotorP = 0.002, angleMotorI = 0.0, angleMotorD = 0.0;
 		public static final boolean wheelDriveInverted = false, angleMotorInverted = false;
+	}
+
+	public static class ClimberConstants {
+		public static final int motorId = 20;
+		public static final double p = 0.00075, i = 0, d = 0;
+		public static final double maxMotorSpeed = 400;
+		public static final double maxMotorPos = 254, minMotorPos = 160;
+		public static final boolean isInverted = false;
 	}
 
 	public static class ElevatorConstants {
@@ -67,11 +69,8 @@ public final class Constants {
 		public static final boolean trolleyMotorInverted = false;
 	}
 
-	public static class ClimberConstants {
-		public static final int motorId = 20;
-		public static final double p = 0.00075, i = 0, d = 0;
-		public static final double maxMotorSpeed = 400;
-		public static final double maxMotorPos = 254, minMotorPos = 160;
-		public static final boolean isInverted = false;
+	public static class SwerveConstants {
+	  public static final double maxSpeedInFeet = 9;
+	  public static final boolean isFieldOriented = true;
 	}
 }

@@ -1,9 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import frc.robot.subsystems.ClimberSubsystem;
-import java.util.function.BooleanSupplier;
 
 class MoveClimberToPosition extends Command {
 	private final ClimberSubsystem m_climberSubsystem;
@@ -15,7 +13,6 @@ class MoveClimberToPosition extends Command {
 		m_climberSubsystem = climberSubsystem;
 		addRequirements(m_climberSubsystem);
 		m_directionMult = (m_climberSubsystem.getPosition() < pos) ? 1 : -1;
-		//this.onlyWhile(m_climberSubsystem.withinBounds());
 	}
 
 	@Override
@@ -26,8 +23,8 @@ class MoveClimberToPosition extends Command {
 	@Override
 	public boolean isFinished() {
 		return (
-			m_climberSubsystem.atSetPosition(m_position).getAsBoolean()
-			| !m_climberSubsystem.withinBounds().getAsBoolean()
+			m_climberSubsystem.isAtSetPosition(m_position).getAsBoolean()
+			| !m_climberSubsystem.isWithinBounds().getAsBoolean()
 		);
 	}
 }
