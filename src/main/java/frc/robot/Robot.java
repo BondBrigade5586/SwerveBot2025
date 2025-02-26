@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_robotContainer.resetElevatorEncoders();
   }
 
   /**
@@ -71,6 +72,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    m_robotContainer.resetElevatorEncoders();
     m_robotContainer.m_swerveSubsystem.zeroGyro();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

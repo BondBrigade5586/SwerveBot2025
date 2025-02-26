@@ -32,16 +32,27 @@ public class RotateClimber extends Command {
   @Override
   public void execute() {
     if (m_forwardTrigger.getAsBoolean() == m_backwardTrigger.getAsBoolean()) {
-      m_subsystem.moveMotor(0);
+      // m_subsystem.moveMotor(0);
+      m_subsystem.stopMotor();
       return;
     }
 
     if (m_forwardTrigger.getAsBoolean()) {
-      if (m_subsystem.getPosition() > ClimberConstants.maxMotorPos) return;
-      m_subsystem.moveMotor(1);
+      if (m_subsystem.getPosition() > ClimberConstants.maxMotorPos) {
+      m_subsystem.stopMotor();
+      // m_subsystem.moveMotor(0);
+        return;
+      }
+      // m_subsystem.moveMotor(1);
+      m_subsystem.moveMotorByPercent(0.7);
     } else if (m_backwardTrigger.getAsBoolean()) {
-      if (m_subsystem.getPosition() < ClimberConstants.minMotorPos) return;
-      m_subsystem.moveMotor(-1);
+      if (m_subsystem.getPosition() < ClimberConstants.minMotorPos) {
+      m_subsystem.stopMotor();
+      // m_subsystem.moveMotor(0);
+        return;
+      }
+      // m_subsystem.moveMotor(-1);
+      m_subsystem.moveMotorByPercent(-0.7);
     }
 
   }
@@ -49,7 +60,7 @@ public class RotateClimber extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.moveMotor(0);
+    m_subsystem.moveMotorByPercent(0);
   }
 
   // Returns true when the command should end.

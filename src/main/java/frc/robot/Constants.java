@@ -41,18 +41,19 @@ public final class Constants {
 	}
 
 	public static class AlgaeConstants {
-		public static final int motorId = -1, motorTwoId = -1;
+		public static final int motorId = 35, motorTwoId = 36;
 		public static final double p = 0.001, i = 0.0, d = 0.0;
 		public static final double maxSpeed = 0;
 		public static final boolean motorInverted = true, motorTwoInverted = false;
 	}
 
 	public static class CoralConstants {
-		public static final int motorId = -1, motorTwoId = -1;
+		public static final int motorId = 37, motorTwoId = 38;
 		public static final double driveMotorMaxSpeed = 0, angleMotorMaxSpeed = 0;
 		public static final double wheelDriveP = 0.002, wheelDriveI = 0.0, wheelDriveD = 0.0;
 		public static final double angleMotorP = 0.002, angleMotorI = 0.0, angleMotorD = 0.0;
 		public static final boolean wheelDriveInverted = false, angleMotorInverted = false;
+		public static final double maxPos = 360, minPos = 0;
 	}
 
 	public static class ClimberConstants {
@@ -61,21 +62,18 @@ public final class Constants {
 		public static final double maxMotorSpeed = 400;
 		public static final double maxMotorPos = 254, minMotorPos = 160;
 		public static final boolean isInverted = false;
+		public static final int currentlimit = 35;
 	}
 
 	public static class ElevatorConstants {
 
-		public static final double elevatorMaxSpeed = 0;
-		public static final double trolleyMaxSpeed = 0;
+		public static final double elevatorMaxSpeed = 1.0;
+		public static final double elevatorMaxAcceleration = 0.5;
 
-		public static final int elevatorMotorId = -1, elevatorMotorTwoId = -1;
-		public static final double elevatorMotorP = 0.002, elevatorMotorI = 0.0, elevatorMotorD = 0.0;
-		public static final double elevatorMotorTwoP = 0.002, elevatorMotorTwoI = 0.0, elevatorMotorTwoD = 0.0;
+		public static final int elevatorMotorId = 30, elevatorMotorTwoId = 31;
+		public static final double elevatorMotorP = 0.00015, elevatorMotorI = 0.0, elevatorMotorD = 0.0;
+		public static final double motorS = 1.1, motorG = 1.2, motorV = 1.3;
 		public static final boolean elevatorMotorInverted = false, elevatorMotorTwoInverted = false;
-
-		public static final int trolleyMotorId = -1;
-		public static final double trolleyMotorP = 0.002, trolleyMotorI = 0.0, trolleyMotorD = 0.0;
-		public static final boolean trolleyMotorInverted = false;
 	}
 
 	public static class SwerveConstants {

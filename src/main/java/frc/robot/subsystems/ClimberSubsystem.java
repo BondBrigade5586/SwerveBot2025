@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
 
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,12 +16,11 @@ public class ClimberSubsystem extends SubsystemBase {
 	private DutyCycleEncoder m_throughBoreEncoder;
 
 	public ClimberSubsystem(int motorId) {
-		m_motor = new Motor(motorId, 20);
+		m_motor = new Motor(motorId, ClimberConstants.currentlimit, IdleMode.kBrake);
 		m_motor.setPid(ClimberConstants.p, ClimberConstants.i, ClimberConstants.d);
 		m_motor.setInverted(ClimberConstants.isInverted);
 		m_motor.burnConfig();
 		m_throughBoreEncoder = new DutyCycleEncoder(0);
-
 	}
 
 	public BooleanSupplier isAtSetPosition(double position) {
@@ -56,6 +57,14 @@ public class ClimberSubsystem extends SubsystemBase {
 		m_motor.setPIDVelocity(ClimberConstants.maxMotorSpeed * directionMult);
 	}
 
+	public void moveMotorByPercent(double percent) {
+		
+		if (getPosition() >= ClimberConstants.maxMotorPos && percent >= 0) return;
+		if (getPosition() <= ClimberConstants.minMotorPos && percent <= 0) return;
+
+		m_motor.setSpeed(percent);
+	}
+
 	public Command rotateCommand(double mult) {
 		final double effectiveMult = (mult >= 0) ? mult % 1 : (Math.abs(mult) % 1) * -1;
 		return this.run(() -> {
@@ -64,7 +73,12 @@ public class ClimberSubsystem extends SubsystemBase {
 	}
 
 	public Command stopMotorCommand() {
-		return this.runOnce(() -> moveMotor(0));
+		// return this.runOnce(() -> moveMotor(0));
+		return this.run(() -> m_motor.setPidPosition(m_motor.getEncoder().getPosition()));
+	}
+
+	public void stopMotor() {
+		m_motor.setPidPosition(m_motor.getEncoder().getPosition());
 	}
 
 	public BooleanSupplier isWithinBounds() {

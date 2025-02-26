@@ -4,27 +4,32 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
+// import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.autonomous.AutoTrajectory;
+import frc.robot.commands.MoveElevator;
+import frc.robot.commands.PivotCoralIntake;
 import frc.robot.commands.RotateClimber;
 import swervelib.SwerveInputStream;
 
-import java.util.ArrayList;
-
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -50,7 +55,11 @@ public class RobotContainer {
 	private AutoTrajectory m_autoTrajectory;
 	private SwerveControllerCommand m_driveForwardCommand;
   private final ClimberSubsystem m_climberSubsystem;
+  private final Elevator m_elevatorSubsystem;
+  private final AlgaeSubsystem m_algaeSubsystem;
+  private final CoralSubsystem m_coralSubsystem;
 	Trigger m_autoTrigger;
+  private final SendableChooser<Command> m_autoChooser;
 
   SwerveInputStream m_angularVelocity;
 
@@ -58,7 +67,13 @@ public class RobotContainer {
   public RobotContainer() {
 
     m_climberSubsystem = new ClimberSubsystem(ClimberConstants.motorId);
+    m_elevatorSubsystem = new Elevator(ElevatorConstants.elevatorMotorId, ElevatorConstants.elevatorMotorTwoId);
     m_swerveSubsystem = new SwerveSubsystem();
+    m_algaeSubsystem = new AlgaeSubsystem(AlgaeConstants.motorId, AlgaeConstants.motorTwoId);
+    m_coralSubsystem = new CoralSubsystem(CoralConstants.motorId, CoralConstants.motorTwoId);
+
+    m_autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
     m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
     m_operatorController = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
@@ -72,8 +87,6 @@ public class RobotContainer {
 														 //Release coral
 														 new InstantCommand()));
 
-    TrajectoryConfig m_trajectoryConfig = new TrajectoryConfig(Units.feetToMeters(3), Units.feetToMeters(2))
-      .setKinematics(m_swerveSubsystem.getKinematics());
 		m_autoTrajectory = new AutoTrajectory(AutoConstants.maxVelocity, AutoConstants.maxAcceleration);
     // m_autoTrajectory.modifyStartPosition(new Pose2d(Units.inchesToMeters(297.5), Units.inchesToMeters(241.44), Rotation2d.fromDegrees(0)));
 		// m_autoTrajectory.translate(-1 * Units.inchesToMeters(88), 0.0);
@@ -95,15 +108,39 @@ public class RobotContainer {
 
     m_angularVelocity = m_swerveSubsystem.getAngularVelocity(m_driverController);
     Command fieldOrientedDrive = m_swerveSubsystem.driveFieldOriented(m_angularVelocity);
-    Command rotateArm = new RotateClimber(
-      m_climberSubsystem, 
-      m_operatorController.leftBumper(), 
-      m_operatorController.rightBumper()
+    // Command rotateArm = new RotateClimber(
+    //   m_climberSubsystem, 
+    //   m_operatorController.povUp(), 
+    //   m_operatorController.povDown()
+    // );
+
+    Command moveElevator = new MoveElevator(
+      m_elevatorSubsystem,
+      new Trigger(() -> m_operatorController.getRightY() > 0.2),
+      new Trigger(() -> m_operatorController.getRightY() < -0.2)
     );
 
-    m_swerveSubsystem.setDefaultCommand(fieldOrientedDrive);
-    m_climberSubsystem.setDefaultCommand(rotateArm);
+    Command moveCoralIntake = new PivotCoralIntake(
+      m_coralSubsystem,
+      new Trigger(() -> m_operatorController.getLeftY() > 0.2),
+      new Trigger(() -> m_operatorController.getLeftY() < -0.2)
+    );
 
+    m_operatorController.leftBumper().onTrue(m_algaeSubsystem.intakeCommand(0)).onFalse(m_algaeSubsystem.stopCommand());
+    m_operatorController.leftTrigger().onTrue(m_algaeSubsystem.outtakeCommand(0)).onFalse(m_algaeSubsystem.stopCommand());
+    
+    m_operatorController.rightBumper().onTrue(m_coralSubsystem.intakeCommand(0.7)).onFalse(m_coralSubsystem.stopCommand());
+    m_operatorController.rightTrigger().onTrue(m_coralSubsystem.outtakeCommand(0.7)).onFalse(m_coralSubsystem.stopCommand());
+
+    m_swerveSubsystem.setDefaultCommand(fieldOrientedDrive);
+    // m_climberSubsystem.setDefaultCommand(rotateArm);
+    m_elevatorSubsystem.setDefaultCommand(moveElevator);
+    m_coralSubsystem.setDefaultCommand(moveCoralIntake);
+
+  }
+
+  public void resetElevatorEncoders() {
+    m_elevatorSubsystem.resetEncoders();
   }
 
   /**
@@ -112,6 +149,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Test Auto");
+    return m_autoChooser.getSelected();
+    // return new PathPlannerAuto("Test Auto");
   }
 }
