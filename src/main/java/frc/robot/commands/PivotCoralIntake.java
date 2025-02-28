@@ -28,14 +28,18 @@ public class PivotCoralIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_forwardTrigger.getAsBoolean() == m_forwardTrigger.getAsBoolean() || (m_forwardTrigger.getAsBoolean() && m_subsytem.getPosition() > CoralConstants.maxPos) || (m_backwardTrigger.getAsBoolean() && m_subsytem.getPosition() < CoralConstants.minPos)) {
-      m_subsytem.setArmSpeed(0);
+    if ( m_forwardTrigger.getAsBoolean() == m_backwardTrigger.getAsBoolean() || 
+        (m_forwardTrigger.getAsBoolean() && m_subsytem.getPosition() > CoralConstants.maxPos) || 
+        (m_backwardTrigger.getAsBoolean() && m_subsytem.getPosition() < CoralConstants.minPos)
+       ) {
+
+        m_subsytem.stopArm();
       return;
     }
     if (m_forwardTrigger.getAsBoolean()) {
-      m_subsytem.setArmSpeed(0.1);
+      m_subsytem.setArmSpeed(0.2);
     } else {
-      m_subsytem.setArmSpeed(-0.1);
+      m_subsytem.setArmSpeed(-0.2);
     }
   }
 

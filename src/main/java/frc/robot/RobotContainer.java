@@ -70,7 +70,7 @@ public class RobotContainer {
     m_elevatorSubsystem = new Elevator(ElevatorConstants.elevatorMotorId, ElevatorConstants.elevatorMotorTwoId);
     m_swerveSubsystem = new SwerveSubsystem();
     m_algaeSubsystem = new AlgaeSubsystem(AlgaeConstants.motorId, AlgaeConstants.motorTwoId);
-    m_coralSubsystem = new CoralSubsystem(CoralConstants.motorId, CoralConstants.motorTwoId);
+    m_coralSubsystem = new CoralSubsystem(CoralConstants.motorId, CoralConstants.pivotMotorId);
 
     m_autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", m_autoChooser);

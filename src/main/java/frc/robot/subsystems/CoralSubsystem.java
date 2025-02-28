@@ -15,7 +15,6 @@ import frc.robot.Constants.CoralConstants;
 public class CoralSubsystem extends SubsystemBase {
 	private DutyCycleEncoder m_pivotEncoder;
 	private Motor m_driveMotor, m_pivotMotor;
-	private SparkClosedLoopController m_pidController;
 
 	public CoralSubsystem(int wheelDriveMotorId, int pivotMotorId) {
 		
@@ -24,12 +23,11 @@ public class CoralSubsystem extends SubsystemBase {
 		m_driveMotor.setInverted(CoralConstants.wheelDriveInverted);
 		m_driveMotor.burnConfig();
 
-		m_pivotMotor = new Motor(pivotMotorId, 20, IdleMode.kBrake);
+		m_pivotMotor = new Motor(pivotMotorId, 35, IdleMode.kBrake);
 		m_pivotMotor.setPid(CoralConstants.angleMotorP, CoralConstants.angleMotorI, CoralConstants.angleMotorD);
 		m_pivotMotor.setInverted(CoralConstants.angleMotorInverted);
 		m_pivotMotor.burnConfig();
-		m_pidController = m_pivotMotor.getMotor().getClosedLoopController();
-		m_pivotEncoder = new DutyCycleEncoder(1);
+		m_pivotEncoder = new DutyCycleEncoder(9);
 	}
 
 	public double getPosition() {
@@ -58,6 +56,10 @@ public class CoralSubsystem extends SubsystemBase {
 
 	public void stop() {
 		m_driveMotor.setSpeed(0);
+	}
+
+	public void stopArm() {
+		m_pivotMotor.setPidPosition(m_pivotMotor.getEncoder().getPosition());
 	}
 
 	public Command stopCommand() {

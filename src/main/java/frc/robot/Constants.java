@@ -48,19 +48,18 @@ public final class Constants {
 	}
 
 	public static class CoralConstants {
-		public static final int motorId = 37, motorTwoId = 38;
-		public static final double driveMotorMaxSpeed = 0, angleMotorMaxSpeed = 0;
+		public static final int motorId = 37, pivotMotorId = 38;
 		public static final double wheelDriveP = 0.002, wheelDriveI = 0.0, wheelDriveD = 0.0;
 		public static final double angleMotorP = 0.002, angleMotorI = 0.0, angleMotorD = 0.0;
 		public static final boolean wheelDriveInverted = false, angleMotorInverted = false;
-		public static final double maxPos = 360, minPos = 0;
+		public static final double maxPos = 190, minPos = 43.5;
 	}
 
 	public static class ClimberConstants {
 		public static final int motorId = 20;
 		public static final double p = 0.00075, i = 0, d = 0;
 		public static final double maxMotorSpeed = 400;
-		public static final double maxMotorPos = 254, minMotorPos = 160;
+		public static final double maxMotorPos = 190, minMotorPos = 103;
 		public static final boolean isInverted = false;
 		public static final int currentlimit = 35;
 	}
