@@ -112,6 +112,10 @@ class Motor {
 		m_motor.set(speed);
 	}
 
+	public void setVoltage(double voltage) {
+		m_motor.setVoltage(voltage);
+	}
+
 	public void stop() {
 		m_closedLoopController.setReference(m_motor.getEncoder().getPosition(), ControlType.kPosition);
 	}

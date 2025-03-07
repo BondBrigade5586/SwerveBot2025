@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CoralConstants;
@@ -33,12 +34,14 @@ public class PivotCoralIntake extends Command {
         (m_backwardTrigger.getAsBoolean() && m_subsytem.getPosition() < CoralConstants.minPos)
        ) {
 
-        m_subsytem.stopArm();
-      return;
-    }
-    if (m_forwardTrigger.getAsBoolean()) {
+        if (m_subsytem.getPosition() > CoralConstants.minPos) {
+          m_subsytem.setArmVoltage(-0.4);
+        } else {
+          m_subsytem.stopArm();
+        }
+    } else if (m_forwardTrigger.getAsBoolean()) {
       m_subsytem.setArmSpeed(0.2);
-    } else {
+    } else if (m_backwardTrigger.getAsBoolean()) {
       m_subsytem.setArmSpeed(-0.2);
     }
   }

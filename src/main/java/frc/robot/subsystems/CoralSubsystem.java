@@ -6,6 +6,7 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -58,12 +59,16 @@ public class CoralSubsystem extends SubsystemBase {
 		m_driveMotor.setSpeed(0);
 	}
 
+	public void setArmVoltage(double voltage) {
+		m_pivotMotor.setVoltage(voltage);
+	}
+
 	public void stopArm() {
 		m_pivotMotor.setPidPosition(m_pivotMotor.getEncoder().getPosition());
 	}
 
 	public Command stopCommand() {
-		return this.run(() -> stop());
+		return this.runOnce(() -> stop());
 	}
 
 	public BooleanSupplier withinBounds() {

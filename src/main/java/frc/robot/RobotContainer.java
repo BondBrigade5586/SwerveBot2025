@@ -72,7 +72,7 @@ public class RobotContainer {
     m_algaeSubsystem = new AlgaeSubsystem(AlgaeConstants.motorId, AlgaeConstants.motorTwoId);
     m_coralSubsystem = new CoralSubsystem(CoralConstants.motorId, CoralConstants.pivotMotorId);
 
-    m_autoChooser = AutoBuilder.buildAutoChooser();
+    m_autoChooser = m_swerveSubsystem.generateAutoChooser();
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
     m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -108,11 +108,11 @@ public class RobotContainer {
 
     m_angularVelocity = m_swerveSubsystem.getAngularVelocity(m_driverController);
     Command fieldOrientedDrive = m_swerveSubsystem.driveFieldOriented(m_angularVelocity);
-    // Command rotateArm = new RotateClimber(
-    //   m_climberSubsystem, 
-    //   m_operatorController.povUp(), 
-    //   m_operatorController.povDown()
-    // );
+    Command rotateArm = new RotateClimber(
+      m_climberSubsystem,
+      m_operatorController.povUp(),
+      m_operatorController.povDown()
+    );
 
     Command moveElevator = new MoveElevator(
       m_elevatorSubsystem,
@@ -126,6 +126,8 @@ public class RobotContainer {
       new Trigger(() -> m_operatorController.getLeftY() < -0.2)
     );
 
+    m_driverController.y().onTrue(m_swerveSubsystem.runOnce(() -> m_swerveSubsystem.zeroGyro()));
+
     m_operatorController.leftBumper().onTrue(m_algaeSubsystem.intakeCommand(0)).onFalse(m_algaeSubsystem.stopCommand());
     m_operatorController.leftTrigger().onTrue(m_algaeSubsystem.outtakeCommand(0)).onFalse(m_algaeSubsystem.stopCommand());
     
@@ -133,7 +135,7 @@ public class RobotContainer {
     m_operatorController.rightTrigger().onTrue(m_coralSubsystem.outtakeCommand(0.7)).onFalse(m_coralSubsystem.stopCommand());
 
     m_swerveSubsystem.setDefaultCommand(fieldOrientedDrive);
-    // m_climberSubsystem.setDefaultCommand(rotateArm);
+    m_climberSubsystem.setDefaultCommand(rotateArm);
     m_elevatorSubsystem.setDefaultCommand(moveElevator);
     m_coralSubsystem.setDefaultCommand(moveCoralIntake);
 
