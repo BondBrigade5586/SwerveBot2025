@@ -51,8 +51,10 @@ public final class Constants {
 		public static final int motorId = 37, pivotMotorId = 38;
 		public static final double wheelDriveP = 0.002, wheelDriveI = 0.0, wheelDriveD = 0.0;
 		public static final double angleMotorP = 0.002, angleMotorI = 0.0, angleMotorD = 0.0;
-		public static final boolean wheelDriveInverted = false, angleMotorInverted = false;
-		public static final double maxPos = 190, minPos = 43.5;
+		public static final boolean wheelDriveInverted = false, angleMotorInverted = true;
+		public static final double maxPos = 340, minPos = 149.5;
+		public static final double sourcePos = 0, levelFourPos = 0, LevelThreePos = 0;
+		public static final double levelTwoPos = 0, homePos = 0;
 	}
 
 	public static class ClimberConstants {
@@ -73,6 +75,9 @@ public final class Constants {
 		public static final double elevatorMotorP = 0.00015, elevatorMotorI = 0.0, elevatorMotorD = 0.0;
 		public static final double motorS = 1.1, motorG = 1.2, motorV = 1.3;
 		public static final boolean elevatorMotorInverted = false, elevatorMotorTwoInverted = false;
+
+		public static final double maxDistance = 12.0, minDistance = 0.0;
+		
 	}
 
 	public static class SwerveConstants {

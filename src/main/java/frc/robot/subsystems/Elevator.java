@@ -1,15 +1,13 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import java.util.function.BooleanSupplier;
+
+import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.Unit;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,7 +15,7 @@ import frc.robot.Constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
 	private Motor m_motor, m_motorTwo;
-	private double m_countsPerRevolution = 0;
+	private Rev2mDistanceSensor m_distanceSensor;
 
 	public Elevator(int motorId, int motorTwoId) {
 		
@@ -31,10 +29,14 @@ public class Elevator extends SubsystemBase {
 		m_motorTwo = new Motor(motorTwoId, 20,IdleMode.kBrake);
 		m_motorTwo.copyConfig(motorId);
 		m_motorTwo.burnConfig();
-	}
 
-	public double getPosition() {
-		return m_motor.getEncoder().getPosition();
+		m_distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
+		m_distanceSensor.setAutomaticMode(true);
+		m_distanceSensor.setDistanceUnits(Unit.kInches);
+	}
+	
+	public double getElevatorDistance() {
+		return m_distanceSensor.getRange();
 	}
 
 	public Command moveElevatorCommand(double speedMult) {
@@ -67,6 +69,12 @@ public class Elevator extends SubsystemBase {
 		return this.run(() -> {
 			m_motor.stop();
 			m_motorTwo.stop();
+		});
+	}
+
+	public BooleanSupplier withinBounds() {
+		return (() -> {
+			return (getElevatorDistance() > ElevatorConstants.minDistance && getElevatorDistance() < ElevatorConstants.maxDistance);
 		});
 	}
 

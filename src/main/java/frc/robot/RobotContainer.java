@@ -17,6 +17,7 @@ import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.autonomous.AutoTrajectory;
+import frc.robot.commands.MoveCoralArmToPosition;
 import frc.robot.commands.MoveElevator;
 import frc.robot.commands.PivotCoralIntake;
 import frc.robot.commands.RotateClimber;
@@ -28,6 +29,8 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.TimeUnit;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -120,13 +123,14 @@ public class RobotContainer {
       new Trigger(() -> m_operatorController.getRightY() < -0.2)
     );
 
-    Command moveCoralIntake = new PivotCoralIntake(
-      m_coralSubsystem,
-      new Trigger(() -> m_operatorController.getLeftY() > 0.2),
-      new Trigger(() -> m_operatorController.getLeftY() < -0.2)
-    );
+    Command moveCoralIntake = new PivotCoralIntake(m_coralSubsystem, m_operatorController);
 
     m_driverController.y().onTrue(m_swerveSubsystem.runOnce(() -> m_swerveSubsystem.zeroGyro()));
+
+    m_operatorController.a().onTrue(new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.homePos));
+    m_operatorController.x().onTrue(new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.LevelThreePos));
+    m_operatorController.y().onTrue(new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.levelFourPos));
+    m_operatorController.b().onTrue(new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.sourcePos));
 
     m_operatorController.leftBumper().onTrue(m_algaeSubsystem.intakeCommand(0)).onFalse(m_algaeSubsystem.stopCommand());
     m_operatorController.leftTrigger().onTrue(m_algaeSubsystem.outtakeCommand(0)).onFalse(m_algaeSubsystem.stopCommand());

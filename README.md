@@ -15,6 +15,9 @@
     - Once the app is installed and opened, go to settings and change the I.P. address to 10.TE.AM.2 (10.55.86.2 for our team).
     - Then go back to the editor and select the components menu. Then drag out ```Swerve Drivebase```, and you should see the output data from your drive base.
 7. Configure the offsets for your angle motors.
+    - If you are using the CTRE CanCoders, you can press this button on Pheonix tuner X to zero your CanCoders.
+    
+    ![alt text](image.png)
 8. Configure the PID values and speed for your motors.
 
 

@@ -4,20 +4,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.CoralSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class MoveElevatorToPosition extends Command {
-  private Elevator m_subsystem;
-  private double m_setPosition, m_currentPosition;
-  private boolean m_commandShouldFinish;
-  /** Creates a new MoveElevatorToPosition. */
-  public MoveElevatorToPosition(Elevator elevatorSubsystem, double position) {
-    m_setPosition = position;
-    m_subsystem = elevatorSubsystem;
+public class OuttakeWithTimeout extends Command {
+
+  private CoralSubsystem m_subsystem;
+  private double m_commandTimeout;
+  /** Creates a new IntakeWithTimeout. */
+  public OuttakeWithTimeout(CoralSubsystem subsystem, double commandTimeout) {
+    m_commandTimeout = commandTimeout;
+    m_subsystem = subsystem;
     addRequirements(m_subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -29,17 +28,7 @@ public class MoveElevatorToPosition extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_currentPosition = m_subsystem.getElevatorDistance();
-    m_commandShouldFinish = (!m_subsystem.withinBounds().getAsBoolean());
-
-
-    if (m_currentPosition > m_setPosition) {
-      m_subsystem.setElevatorSpeed(-0.2);
-    } else if (m_currentPosition < m_setPosition) {
-      m_subsystem.setElevatorSpeed(0.2);
-    } else {
-      m_commandShouldFinish = true;
-    }
+    m_subsystem.outtake(0.7);
   }
 
   // Called once the command ends or is interrupted.
@@ -49,11 +38,12 @@ public class MoveElevatorToPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_commandShouldFinish;
+    return false;
   }
 
   @Override
   public ParallelRaceGroup withTimeout(double seconds) {
-      return super.withTimeout(3);
+      // TODO Auto-generated method stub
+      return super.withTimeout(m_commandTimeout);
   }
 }
