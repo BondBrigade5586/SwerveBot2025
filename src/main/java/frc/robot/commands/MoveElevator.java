@@ -28,15 +28,17 @@ public class MoveElevator extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (m_Elevator.motorsAreNull()) return;
     if (m_forwardTrigger.getAsBoolean() == m_backwardTrigger.getAsBoolean()) {
-      m_Elevator.stop();
+      // m_Elevator.stop();
+      m_Elevator.setElevatorVoltage(0.2);
       return;
     }
 
     if (m_forwardTrigger.getAsBoolean()) {
-      m_Elevator.setElevatorSpeed(0.2);
+      m_Elevator.setElevatorSpeed(0.5);
     } else if (m_backwardTrigger.getAsBoolean()) {
-      m_Elevator.setElevatorSpeed(-0.2);
+      m_Elevator.setElevatorSpeed(-0.4);
     }
 
   }

@@ -31,6 +31,7 @@ public class RotateClimber extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (m_subsystem.motorIsNull()) return;
     if (m_forwardTrigger.getAsBoolean() == m_backwardTrigger.getAsBoolean()) {
       // m_subsystem.moveMotor(0);
       m_subsystem.stopMotor();

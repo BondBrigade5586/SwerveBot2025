@@ -49,6 +49,10 @@ public class ClimberSubsystem extends SubsystemBase {
 		});
 	}
 
+	public boolean motorIsNull() {
+		return m_motor.getMotor().getFaults().can;
+	}
+
 	public void moveMotor(int directionMult) {
 		
 		if (getPosition() >= ClimberConstants.maxMotorPos && directionMult == 1) return;

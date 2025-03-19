@@ -28,6 +28,10 @@ public class AlgaeSubsystem extends SubsystemBase {
 		m_motorTwo.setPIDVelocity(speedMult * AlgaeConstants.maxSpeed);
 	}
 
+	public boolean motorsAreNull() {
+		return (m_motor.getMotor().getFaults().can || m_motorTwo.getMotor().getFaults().can);
+	}
+
 	void outtake(double speedMult) {
 		m_motor.setPIDVelocity(speedMult * AlgaeConstants.maxSpeed * -1);
 		m_motorTwo.setPIDVelocity(speedMult * AlgaeConstants.maxSpeed * -1);

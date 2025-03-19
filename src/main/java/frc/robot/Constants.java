@@ -52,16 +52,17 @@ public final class Constants {
 		public static final double wheelDriveP = 0.002, wheelDriveI = 0.0, wheelDriveD = 0.0;
 		public static final double angleMotorP = 0.002, angleMotorI = 0.0, angleMotorD = 0.0;
 		public static final boolean wheelDriveInverted = false, angleMotorInverted = true;
-		public static final double maxPos = 340, minPos = 149.5;
-		public static final double sourcePos = 0, levelFourPos = 0, LevelThreePos = 0;
-		public static final double levelTwoPos = 0, homePos = 0;
+		public static final double maxPos = 322, minPos = 183.5;
+		public static final double levelFourPos = 0, LevelThreePos = 270, levelTwoPos = 275;
+		public static final double homePos = maxPos, sourcePos = 207;
+		//L1: 242
 	}
 
 	public static class ClimberConstants {
 		public static final int motorId = 20;
 		public static final double p = 0.00075, i = 0, d = 0;
 		public static final double maxMotorSpeed = 400;
-		public static final double maxMotorPos = 190, minMotorPos = 117.6;
+		public static final double maxMotorPos = 190, minMotorPos = 79;
 		public static final boolean isInverted = false;
 		public static final int currentlimit = 35;
 	}
@@ -74,9 +75,12 @@ public final class Constants {
 		public static final int elevatorMotorId = 30, elevatorMotorTwoId = 31;
 		public static final double elevatorMotorP = 0.00015, elevatorMotorI = 0.0, elevatorMotorD = 0.0;
 		public static final double motorS = 1.1, motorG = 1.2, motorV = 1.3;
-		public static final boolean elevatorMotorInverted = false, elevatorMotorTwoInverted = false;
+		public static final boolean elevatorMotorInverted = true, elevatorMotorTwoInverted = true;
 
-		public static final double maxDistance = 12.0, minDistance = 0.0;
+		public static final double maxDistance = 12.0, minDistance = 6.7;
+		public static final double sourcePos = 0, levelFourPos = 0, LevelThreePos = 0;
+		public static final double levelTwoPos = 0, homePos = 0;
+
 		
 	}
 

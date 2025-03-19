@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -25,10 +25,9 @@ public class PivotCoralIntake extends Command {
   }
   InputState m_inputState;
   /** Creates a new PivotCoralIntake. */
-  public PivotCoralIntake(CoralSubsystem coralSubsytem, CommandXboxController controller) {
-    m_controller = controller;
-    m_forwardTrigger = new Trigger(() -> m_controller.getRightY() > 0.2);
-    m_backwardTrigger = new Trigger(() -> m_controller.getRightY() < -0.2);
+  public PivotCoralIntake(CoralSubsystem coralSubsytem, Trigger forwardTrigger, Trigger backwardTrigger) {
+    m_forwardTrigger = forwardTrigger;
+    m_backwardTrigger = backwardTrigger;
     m_subsytem = coralSubsytem;
     addRequirements(m_subsytem);
   }
@@ -44,7 +43,7 @@ public class PivotCoralIntake extends Command {
     switch (m_inputState) {
       case NULL:
         if (m_subsytem.getPosition() > CoralConstants.minPos) {
-          m_subsytem.setArmVoltage(0.4);
+          m_subsytem.setArmVoltage(0.3);
         } else {
           m_subsytem.stopArm();
         }
@@ -58,6 +57,9 @@ public class PivotCoralIntake extends Command {
       default:
         break;
     }
+
+    SmartDashboard.putString("CoralSubsystem/Coral Input Status", m_inputState.toString());
+
     // if ( m_forwardTrigger.getAsBoolean() == m_backwardTrigger.getAsBoolean() || 
     //     (m_forwardTrigger.getAsBoolean() && m_subsytem.getPosition() > CoralConstants.maxPos) || 
     //     (m_backwardTrigger.getAsBoolean() && m_subsytem.getPosition() < CoralConstants.minPos)
@@ -75,10 +77,6 @@ public class PivotCoralIntake extends Command {
     // }
   }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
@@ -86,14 +84,14 @@ public class PivotCoralIntake extends Command {
   }
 
   private InputState processInput() {
-    if ( m_forwardTrigger.getAsBoolean() == m_backwardTrigger.getAsBoolean() || 
-        (m_forwardTrigger.getAsBoolean() && m_subsytem.getPosition() > CoralConstants.maxPos) || 
-        (m_backwardTrigger.getAsBoolean() && m_subsytem.getPosition() < CoralConstants.minPos)
-       ) {
-        return InputState.NULL;
-    } else if (m_forwardTrigger.getAsBoolean()) {
+    if (m_forwardTrigger.getAsBoolean() == m_backwardTrigger.getAsBoolean()) return InputState.NULL;
+    if (m_subsytem.pivotMotorIsNull()) return InputState.NULL;
+    
+    if (m_forwardTrigger.getAsBoolean()) {
+      if (m_subsytem.getPosition() < CoralConstants.minPos) return InputState.NULL;
       return InputState.JOYSTICK_UP;
     } else if (m_backwardTrigger.getAsBoolean()) {
+      if (m_subsytem.getPosition() > CoralConstants.maxPos) return InputState.NULL;
       return InputState.JOYSTICK_DOWN;
     }
     return InputState.NULL;

@@ -7,12 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class MoveElevatorToPosition extends Command {
   private Elevator m_subsystem;
-  private double m_setPosition, m_currentPosition;
+  private double m_setPosition, m_currentPosition, m_speed = 0;
   private boolean m_commandShouldFinish;
   /** Creates a new MoveElevatorToPosition. */
   public MoveElevatorToPosition(Elevator elevatorSubsystem, double position) {
@@ -31,15 +32,25 @@ public class MoveElevatorToPosition extends Command {
   public void execute() {
     m_currentPosition = m_subsystem.getElevatorDistance();
     m_commandShouldFinish = (!m_subsystem.withinBounds().getAsBoolean());
-
-
-    if (m_currentPosition > m_setPosition) {
-      m_subsystem.setElevatorSpeed(-0.2);
-    } else if (m_currentPosition < m_setPosition) {
-      m_subsystem.setElevatorSpeed(0.2);
-    } else {
-      m_commandShouldFinish = true;
+    m_speed = (m_currentPosition < m_setPosition) ? 0.2 : -0.2;
+    
+    if (m_currentPosition > ElevatorConstants.minDistance && m_currentPosition < ElevatorConstants.maxDistance) {
+      // if (m_currentPosition < m_setPosition) m_subsystem.setElevatorSpeed(0.2);
+      m_subsystem.setElevatorSpeed(m_speed);
+      if (Math.abs(m_currentPosition - m_setPosition) < 0.2) m_commandShouldFinish = true;
+    } else if (m_currentPosition > ElevatorConstants.maxDistance) {
+      if (m_currentPosition > m_setPosition) m_subsystem.setElevatorSpeed(m_speed);
+    } else if (m_currentPosition < ElevatorConstants.minDistance) {
+      if (m_currentPosition < m_setPosition) m_subsystem.setElevatorSpeed(m_speed);
     }
+
+    // if (m_currentPosition > m_setPosition) {
+    //   m_subsystem.setElevatorSpeed(-0.2);
+    // } else if (m_currentPosition < m_setPosition) {
+    //   m_subsystem.setElevatorSpeed(0.2);
+    // } else {
+    //   m_commandShouldFinish = true;
+    // }
   }
 
   // Called once the command ends or is interrupted.

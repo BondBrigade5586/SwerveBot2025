@@ -43,12 +43,20 @@ public class CoralSubsystem extends SubsystemBase {
 		return this.run(() -> intake(speedMult));
 	}
 
+	public boolean intakeMotorIsNull() {
+		return m_driveMotor.getMotor().getFaults().can;
+	}
+
 	public void outtake(double speedMult) {
 		m_driveMotor.setSpeed(speedMult * -1);
 	}
 
 	public Command outtakeCommand(double speedMult) {
 		return this.run(() -> outtake(speedMult));
+	}
+
+	public boolean pivotMotorIsNull() {
+		return m_pivotMotor.getMotor().getFaults().can;
 	}
 
 	public void setArmSpeed(double speedMult) {
@@ -71,8 +79,13 @@ public class CoralSubsystem extends SubsystemBase {
 		return this.runOnce(() -> stop());
 	}
 
+	public Command stopArmCommand() {
+		return this.runOnce(() -> m_pivotMotor.setSpeed(0));
+	}
+
 	public BooleanSupplier withinBounds() {
-		return () -> (getPosition() > CoralConstants.minPos && getPosition() < CoralConstants.maxPos);
+		double position = this.getPosition();
+		return () -> (position > CoralConstants.minPos && position < CoralConstants.maxPos);
 	}
 
 	@Override
