@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import frc.robot.Constants.ElevatorConstants;
@@ -32,17 +33,28 @@ public class MoveElevatorToPosition extends Command {
   public void execute() {
     m_currentPosition = m_subsystem.getElevatorDistance();
     m_commandShouldFinish = (!m_subsystem.withinBounds().getAsBoolean());
+    String message = "null";
+
     m_speed = (m_currentPosition < m_setPosition) ? 0.2 : -0.2;
+    if (Math.abs(m_currentPosition - m_setPosition) < 0.4) {
+      // m_commandShouldFinish = true;
+      message = "command Finished";
+      m_speed = 0;
+      return;
+    }
     
+    //TODO: Allow the command to follow the constraints, e.g. raise if it is below the limit.
     if (m_currentPosition > ElevatorConstants.minDistance && m_currentPosition < ElevatorConstants.maxDistance) {
       // if (m_currentPosition < m_setPosition) m_subsystem.setElevatorSpeed(0.2);
-      m_subsystem.setElevatorSpeed(m_speed);
-      if (Math.abs(m_currentPosition - m_setPosition) < 0.2) m_commandShouldFinish = true;
-    } else if (m_currentPosition > ElevatorConstants.maxDistance) {
-      if (m_currentPosition > m_setPosition) m_subsystem.setElevatorSpeed(m_speed);
-    } else if (m_currentPosition < ElevatorConstants.minDistance) {
-      if (m_currentPosition < m_setPosition) m_subsystem.setElevatorSpeed(m_speed);
+      if (m_currentPosition < m_setPosition) {
+        m_subsystem.setElevatorSpeed(0.2);
+      } else if (m_currentPosition > m_setPosition) {
+        m_subsystem.setElevatorSpeed(-0.15);
+      }
+      message = "Within bound, speed: " + m_speed;
     }
+
+    SmartDashboard.putString("elevator/elevatorCommandStatus", message);
 
     // if (m_currentPosition > m_setPosition) {
     //   m_subsystem.setElevatorSpeed(-0.2);
@@ -55,16 +67,14 @@ public class MoveElevatorToPosition extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_subsystem.setElevatorSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_commandShouldFinish;
-  }
-
-  @Override
-  public ParallelRaceGroup withTimeout(double seconds) {
-      return super.withTimeout(3);
+    // return m_commandShouldFinish;
+    return (Math.abs(m_currentPosition - m_setPosition) < 0.4 || m_subsystem.getElevatorDistance() == -1);
   }
 }

@@ -24,6 +24,8 @@ import frc.robot.commands.PivotCoralIntake;
 import frc.robot.commands.RotateClimber;
 import swervelib.SwerveInputStream;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -38,6 +40,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
@@ -102,6 +105,10 @@ public class RobotContainer {
 
   }
 
+  private boolean intakeCommandShouldRun(CommandXboxController controller) {
+    return !(Math.abs(controller.getLeftY()) > 0.2 || Math.abs(controller.getLeftX()) > 0.2);
+  }
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -115,6 +122,7 @@ public class RobotContainer {
 
     m_angularVelocity = m_swerveSubsystem.getAngularVelocity(m_driverController);
     Command fieldOrientedDrive = m_swerveSubsystem.driveFieldOriented(m_angularVelocity);
+    Command fieldOrientedDriveSlow = m_swerveSubsystem.driveFieldOrientedSlow(m_angularVelocity);
     Command rotateArm = new RotateClimber(
       m_climberSubsystem,
       m_operatorController.povUp(),
@@ -138,26 +146,35 @@ public class RobotContainer {
     Command moveCoralIntakeToLevelThree = new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.LevelThreePos);
     Command moveCoralIntakeToSource = new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.sourcePos);
 
-    Command moveElevatorToHome = new MoveElevatorToPosition(m_elevatorSubsystem, CoralConstants.homePos);
-    Command moveElevatorToLevelFour = new MoveElevatorToPosition(m_elevatorSubsystem, CoralConstants.levelFourPos);
-    Command moveElevatorToLevelThree = new MoveElevatorToPosition(m_elevatorSubsystem, CoralConstants.LevelThreePos);
-    Command moveElevatorToSource = new MoveElevatorToPosition(m_elevatorSubsystem, CoralConstants.sourcePos);
+    Command moveElevatorToHome = new MoveElevatorToPosition(m_elevatorSubsystem, ElevatorConstants.homePos);
+    Command moveElevatorToLevelTwo = new MoveElevatorToPosition(m_elevatorSubsystem, ElevatorConstants.levelTwoPos);
+    Command moveElevatorToLevelThree = new MoveElevatorToPosition(m_elevatorSubsystem, ElevatorConstants.LevelThreePos);
+    Command moveElevatorToSource = new MoveElevatorToPosition(m_elevatorSubsystem, ElevatorConstants.sourcePos);
 
     m_driverController.y().onTrue(m_swerveSubsystem.runOnce(() -> m_swerveSubsystem.zeroGyro()));
+    m_driverController.rightTrigger().whileTrue(fieldOrientedDriveSlow);
 
-    
-    m_operatorController.a().onTrue(new InstantCommand(() -> {
-      CommandScheduler.getInstance().schedule(moveCoralIntakeToHome);
-    }));
-    m_operatorController.y().onTrue(new InstantCommand(() -> {
-      CommandScheduler.getInstance().schedule(moveCoralIntakeToLevelTwo);
-    }));
-    m_operatorController.x().onTrue(new InstantCommand(() -> {
-      CommandScheduler.getInstance().schedule(moveCoralIntakeToLevelThree);
-    }));
-    m_operatorController.b().onTrue(new InstantCommand(() -> {
-      CommandScheduler.getInstance().schedule(moveCoralIntakeToSource);
-    }));
+    //TODO: Make Commands more consistent.
+    m_operatorController.b().onTrue(new SequentialCommandGroup(
+      new MoveElevatorToPosition(m_elevatorSubsystem, ElevatorConstants.homePos).onlyWhile(() -> intakeCommandShouldRun(m_operatorController)),
+      new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.homePos).onlyWhile(() -> intakeCommandShouldRun(m_operatorController))
+
+    ));
+
+    m_operatorController.x().onTrue(new SequentialCommandGroup(
+      new MoveElevatorToPosition(m_elevatorSubsystem, ElevatorConstants.levelTwoPos).onlyWhile(() -> intakeCommandShouldRun(m_operatorController)),
+      new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.levelTwoPos).onlyWhile(() -> intakeCommandShouldRun(m_operatorController))
+    ));
+
+    m_operatorController.y().onTrue(new SequentialCommandGroup(
+      new MoveElevatorToPosition(m_elevatorSubsystem, ElevatorConstants.LevelThreePos).onlyWhile(() -> intakeCommandShouldRun(m_operatorController)),
+      new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.LevelThreePos).onlyWhile(() -> intakeCommandShouldRun(m_operatorController))
+    ).withTimeout(3));
+
+    m_operatorController.a().onTrue(new SequentialCommandGroup(
+      new MoveElevatorToPosition(m_elevatorSubsystem, ElevatorConstants.sourcePos).onlyWhile(() -> intakeCommandShouldRun(m_operatorController)),
+      new MoveCoralArmToPosition(m_coralSubsystem, CoralConstants.sourcePos).onlyWhile(() -> intakeCommandShouldRun(m_operatorController))
+    ));
 
     m_operatorController.leftBumper().onTrue(m_algaeSubsystem.intakeCommand(0)).onFalse(m_algaeSubsystem.stopCommand());
     m_operatorController.leftTrigger().onTrue(m_algaeSubsystem.outtakeCommand(0)).onFalse(m_algaeSubsystem.stopCommand());
@@ -176,7 +193,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Move Coral Intake To Home", moveCoralIntakeToHome);
     NamedCommands.registerCommand("Move Coral Intake To Source", moveCoralIntakeToSource);
 
-    NamedCommands.registerCommand("Move Elevator To L4", moveElevatorToLevelFour);
+    // NamedCommands.registerCommand("Move Elevator To L4", moveElevatorToLevelFour);
     NamedCommands.registerCommand("Move Elevator To L3", moveElevatorToLevelThree);
     NamedCommands.registerCommand("Move Elevator To Home", moveElevatorToHome);
     NamedCommands.registerCommand("Move Elevator To Source", moveElevatorToSource);

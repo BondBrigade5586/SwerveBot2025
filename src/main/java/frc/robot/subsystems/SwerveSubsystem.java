@@ -91,7 +91,7 @@ public class SwerveSubsystem extends SubsystemBase {
       this::getPose,
       m_swerveDrive::resetOdometry,
       m_swerveDrive::getRobotVelocity, 
-      (speed, feedForward) -> driveFieldOriented(speed), 
+      (speed, feedForward) -> driveFieldOriented(speed, false), 
       new PPHolonomicDriveController(
         new PIDConstants(2.43, 0, 0), 
         new PIDConstants(2.477, 0, 0)
@@ -157,13 +157,20 @@ public class SwerveSubsystem extends SubsystemBase {
     });
   }
 
-  public void driveFieldOriented(ChassisSpeeds velocity) {
-    m_swerveDrive.driveFieldOriented(velocity);
+  public void driveFieldOriented(ChassisSpeeds velocity, boolean trigger) {
+    double speedMult = (trigger) ? 0.5 : 1;
+    m_swerveDrive.driveFieldOriented(velocity.times(speedMult));
   }
   
   public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
     return run(() -> {
       m_swerveDrive.driveFieldOriented(velocity.get());
+    });
+  }
+
+  public Command driveFieldOrientedSlow(Supplier<ChassisSpeeds> velocity) {
+    return run(() -> {
+      m_swerveDrive.driveFieldOriented(velocity.get().times(0.5));
     });
   }
 
@@ -210,10 +217,11 @@ public class SwerveSubsystem extends SubsystemBase {
   
 
   public SwerveInputStream getAngularVelocity(CommandXboxController controller) {
+    double speedMult = (controller.rightTrigger().getAsBoolean()) ? 0.5 : 1;
     return SwerveInputStream.of(
       m_swerveDrive,
-      () -> controller.getLeftY(),
-      () -> controller.getLeftX())
+      () -> controller.getLeftY() * speedMult,
+      () -> controller.getLeftX() * speedMult)
                                       .withControllerRotationAxis(() -> controller.getRightX() * -1)
                                       .deadband(Constants.OperatorConstants.controllerDeadband)
                                       .scaleTranslation(0.8)

@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Elevator;
 
@@ -48,7 +49,6 @@ public class MoveElevator extends Command {
   public void end(boolean interrupted) {
     m_Elevator.stop();
   }
-
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.WrapperCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CoralConstants;
@@ -97,8 +98,8 @@ public class PivotCoralIntake extends Command {
     return InputState.NULL;
   }
 
-  @Override
-  public ParallelRaceGroup withTimeout(double seconds) {
-    return super.withTimeout(3);
-  }
+  // @Override
+  // public ParallelRaceGroup withTimeout(double seconds) {
+  //   return super.withTimeout(3);
+  // }
 }

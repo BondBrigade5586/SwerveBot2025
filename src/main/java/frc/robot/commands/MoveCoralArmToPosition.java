@@ -34,21 +34,29 @@ public class MoveCoralArmToPosition extends Command {
   @Override
   public void execute() {
     m_position = m_subsystem.getPosition();
-    // m_withinBounds = m_subsystem.withinBounds().getAsBoolean();
+    m_withinBounds = m_subsystem.withinBounds().getAsBoolean();
     // m_withinBounds = (m_position > CoralConstants.minPos && m_position < CoralConstants.maxPos);
 
     // m_commandIsFinished = m_withinBounds ? false : true;
+    m_commandIsFinished = (Math.abs(m_position - m_setPosition) <= 7.5);
 
     //If too far up
-    if (m_position < CoralConstants.minPos) {
-      if (m_position < m_setPosition) m_subsystem.setArmSpeed(-0.15);
-    } else if (m_position > CoralConstants.maxPos) {
-      if (m_position > m_setPosition) m_subsystem.setArmSpeed(0.15);
-    } else if (m_position > CoralConstants.minPos && m_position < CoralConstants.maxPos) {
-      if (m_position > m_setPosition) m_subsystem.setArmSpeed(0.15);
-      if (m_position < m_setPosition) m_subsystem.setArmSpeed(-0.15);
-      m_commandIsFinished = (Math.abs(m_position - m_setPosition) <= 4);
-    } 
+    // if (m_position < CoralConstants.minPos) {
+    //   if (m_position < m_setPosition) m_subsystem.setArmSpeed(-0.15);
+    // } else if (m_position > CoralConstants.maxPos) {
+    //   if (m_position > m_setPosition) m_subsystem.setArmSpeed(0.15);
+    // } else if (m_position > CoralConstants.minPos && m_position < CoralConstants.maxPos) {
+    //   if (m_position > m_setPosition) m_subsystem.setArmSpeed(0.175);
+    //   if (m_position < m_setPosition) m_subsystem.setArmSpeed(-0.15);
+    // } 
+
+    if (m_position < CoralConstants.maxPos && m_position > CoralConstants.minPos) {
+      if (m_position > m_setPosition) {
+        if (m_withinBounds) m_subsystem.setArmSpeed(0.165);
+      } else {
+        m_subsystem.setArmSpeed(-0.1);
+      }
+    }
 
     // if (m_position > m_setPosition) {
     //   // if (m_position > CoralConstants.maxPos) return;
@@ -75,11 +83,5 @@ public class MoveCoralArmToPosition extends Command {
   public boolean isFinished() {
     return m_commandIsFinished;
     // return false;
-  }
-
-  @Override
-  public ParallelRaceGroup withTimeout(Time time) {
-      // TODO Auto-generated method stub
-      return super.withTimeout(2);
   }
 }

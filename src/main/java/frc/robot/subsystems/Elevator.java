@@ -7,6 +7,10 @@ import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.Rev2mDistanceSensor.Port;
 import com.revrobotics.Rev2mDistanceSensor.Unit;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import au.grapplerobotics.CanBridge;
+import au.grapplerobotics.LaserCan;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,6 +19,7 @@ import frc.robot.Constants.ElevatorConstants;
 public class Elevator extends SubsystemBase {
 	private Motor m_motor, m_motorTwo;
 	private Rev2mDistanceSensor m_distanceSensor;
+	private LaserCan m_laserCan;
 
 	public Elevator(int motorId, int motorTwoId) {
 		
@@ -30,9 +35,12 @@ public class Elevator extends SubsystemBase {
 		m_motorTwo.copyConfig(motorId);
 		m_motorTwo.burnConfig();
 
-		m_distanceSensor = new Rev2mDistanceSensor(Port.kMXP);
-		m_distanceSensor.setAutomaticMode(true);
-		m_distanceSensor.setRangeProfile(RangeProfile.kLongRange);
+		// m_distanceSensor = new Rev2mDistanceSensor(Port.kMXP);
+		// m_distanceSensor.setAutomaticMode(true);
+		// m_distanceSensor.setRangeProfile(RangeProfile.kLongRange);
+
+		m_laserCan = new LaserCan(ElevatorConstants.distanceSensorId);
+		CanBridge.runTCP();
 	}
 
 	public double getMotorOneAmperage() {
@@ -44,7 +52,9 @@ public class Elevator extends SubsystemBase {
 	}
 	
 	public double getElevatorDistance() {
-		return m_distanceSensor.getRange(Unit.kInches);
+		if (m_laserCan.getMeasurement() == null) return -1;
+		return m_laserCan.getMeasurement().distance_mm / 25.4;
+		// return m_distanceSensor.getRange(Unit.kInches);
 	}
 
 	public boolean motorsAreNull() {
@@ -102,9 +112,9 @@ public class Elevator extends SubsystemBase {
 			m_motor.getEncoder().getPosition()
 		);
 
-		SmartDashboard.putBoolean("Elevator/Distance Sensor Status", m_distanceSensor.isEnabled());
+		// SmartDashboard.putBoolean("Elevator/Distance Sensor Status", m_distanceSensor.isEnabled());
 		SmartDashboard.putNumber("Elevator/Distance Sensor Range", getElevatorDistance());
-		SmartDashboard.putBoolean("Elevator/Valid Distance Sensor Range", m_distanceSensor.isRangeValid());
+		// SmartDashboard.putBoolean("Elevator/Valid Distance Sensor Range", m_distanceSensor.isRangeValid());
 		SmartDashboard.putNumber("Eelvator/Motor One Current", getMotorOneAmperage());
 		SmartDashboard.putNumber("Eelvator/Motor Two Current", getMotorTwoAmperage());
 	}
