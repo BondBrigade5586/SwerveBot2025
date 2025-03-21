@@ -36,6 +36,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
@@ -222,7 +224,7 @@ public class SwerveSubsystem extends SubsystemBase {
       m_swerveDrive,
       () -> controller.getLeftY() * speedMult,
       () -> controller.getLeftX() * speedMult)
-                                      .withControllerRotationAxis(() -> controller.getRightX() * -1)
+                                      .withControllerRotationAxis(() -> controller.getRightX() * 1)
                                       .deadband(Constants.OperatorConstants.controllerDeadband)
                                       .scaleTranslation(0.8)
                                       .allianceRelativeControl(true);

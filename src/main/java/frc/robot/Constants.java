@@ -53,8 +53,8 @@ public final class Constants {
 		public static final double angleMotorP = 0.002, angleMotorI = 0.0, angleMotorD = 0.0;
 		public static final boolean wheelDriveInverted = false, angleMotorInverted = true;
 		public static final double maxPos = 322, minPos = 183.5;
-		public static final double levelFourPos = 0, LevelThreePos = 282, levelTwoPos = 282;
-		public static final double homePos = maxPos, sourcePos = 207;
+		public static final double levelFourPos = 0, LevelThreePos = 295, levelTwoPos = 286;
+		public static final double homePos = maxPos, sourcePos = 210;
 		//L1: 242
 	}
 
@@ -62,9 +62,9 @@ public final class Constants {
 		public static final int motorId = 20;
 		public static final double p = 0.00075, i = 0, d = 0;
 		public static final double maxMotorSpeed = 400;
-		public static final double maxMotorPos = 190, minMotorPos = 79;
+		public static final double maxMotorPos = 360, minMotorPos = 0;
 		public static final boolean isInverted = false;
-		public static final int currentlimit = 35;
+		public static final int currentlimit = 90;
 	}
 
 	public static class ElevatorConstants {
@@ -78,8 +78,8 @@ public final class Constants {
 		public static final boolean elevatorMotorInverted = true, elevatorMotorTwoInverted = true;
 
 		public static final double maxDistance = 34.0, minDistance = 0;
-		public static final double sourcePos = 3, levelFourPos = 0, LevelThreePos = 29;
-		public static final double levelTwoPos = 12.5, homePos = 1.5;
+		public static final double sourcePos = 0, levelFourPos = 0, LevelThreePos = 33.7;
+		public static final double levelTwoPos = 15.2, homePos = 1.5;
 
 		public static final int distanceSensorId = 39;
 

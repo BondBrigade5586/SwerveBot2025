@@ -39,8 +39,8 @@ public class AlgaeSubsystem extends SubsystemBase {
 
 	public Command intakeCommand(double speedMult) {
 		return this.run(() -> {
-			m_motor.setSpeed(0.3);
-			m_motorTwo.setSpeed(0.3);
+			m_motor.setSpeed(speedMult);
+			m_motorTwo.setSpeed(speedMult);
 		});
 	}
 

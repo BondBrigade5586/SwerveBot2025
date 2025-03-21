@@ -32,28 +32,28 @@ public class RotateClimber extends Command {
   @Override
   public void execute() {
     if (m_subsystem.motorIsNull()) return;
-    if (m_forwardTrigger.getAsBoolean() == m_backwardTrigger.getAsBoolean()) {
+    if (m_forwardTrigger.getAsBoolean() == m_backwardTrigger.getAsBoolean() && !m_subsystem.motorIsNull()) {
       // m_subsystem.moveMotor(0);
       m_subsystem.stopMotor();
       return;
     }
 
-    if (m_forwardTrigger.getAsBoolean()) {
+    if (m_forwardTrigger.getAsBoolean() && !m_subsystem.motorIsNull()) {
       if (m_subsystem.getPosition() > ClimberConstants.maxMotorPos) {
       m_subsystem.stopMotor();
       // m_subsystem.moveMotor(0);
         return;
       }
       // m_subsystem.moveMotor(1);
-      m_subsystem.moveMotorByPercent(0.7);
-    } else if (m_backwardTrigger.getAsBoolean()) {
+      m_subsystem.moveMotorByPercent(1);
+    } else if (m_backwardTrigger.getAsBoolean() && !m_subsystem.motorIsNull()) {
       if (m_subsystem.getPosition() < ClimberConstants.minMotorPos) {
       m_subsystem.stopMotor();
       // m_subsystem.moveMotor(0);
         return;
       }
       // m_subsystem.moveMotor(-1);
-      m_subsystem.moveMotorByPercent(-0.7);
+      m_subsystem.moveMotorByPercent(-1);
     }
 
   }
